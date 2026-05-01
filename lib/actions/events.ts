@@ -1,0 +1,827 @@
+'use server'
+
+import { unstable_cache } from 'next/cache'
+import { createServerClient } from '@/lib/supabase/server'
+import { DatabaseEvent, UIEvent, PopupCity } from '@/lib/types/events'
+import { normalizeSocietyName } from '@/lib/utils/society-matcher'
+import { manualPopupEvents } from '@/lib/data/manual-popup-events'
+import { argentinaPopupEvents } from '@/lib/data/argentina-popup-events'
+
+/**
+ * Parse network state from organizers field
+ * Checks if any organizer contains specific network names
+ * Supabase auto-parses JSON columns, so it can be:
+ * - Already an array: [{"name": "Network School"}]
+ * - A JSON string: '[{"name": "Network School"}]'
+ * - null or empty array
+ */
+function parseNetworkState(organizers: Array<{ name: string }> | string | null): string {
+  // Handle null/undefined/empty
+  if (!organizers) {
+    return 'Unknown'
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let parsed: any = organizers
+
+  // If it's a string, try to parse it
+  if (typeof organizers === 'string') {
+    if (organizers === '[]' || organizers === '""' || organizers.trim() === '') {
+      return 'Unknown'
+    }
+    try {
+      parsed = JSON.parse(organizers)
+    } catch {
+      // If parsing fails, check if string contains Network School
+      const orgLower = organizers.toLowerCase()
+      if (orgLower.includes('network') && orgLower.includes('school')) {
+        return 'Network School'
+      }
+      return organizers.trim()
+    }
+  }
+
+  // Now handle the parsed/native array
+  if (Array.isArray(parsed)) {
+    if (parsed.length === 0) {
+      return 'Unknown'
+    }
+
+    // Check ALL organizers for Network School (not just the last one)
+    for (const org of parsed) {
+      const name = typeof org === 'object' && org !== null && 'name' in org ? org.name : org
+      if (typeof name === 'string') {
+        const nameLower = name.toLowerCase()
+        if (nameLower.includes('network') && nameLower.includes('school')) {
+          return 'Network School'
+        }
+      }
+    }
+
+    // If no Network School found, return the LAST organizer in the array
+    const lastOrg = parsed[parsed.length - 1]
+
+    // If last item is an object with a 'name' property
+    if (typeof lastOrg === 'object' && lastOrg !== null && 'name' in lastOrg) {
+      const name = lastOrg.name
+      return (typeof name === 'string' && name.trim()) ? name.trim() : 'Unknown'
+    }
+
+    // If last item is just a string
+    if (typeof lastOrg === 'string' && lastOrg.trim()) {
+      return lastOrg.trim()
+    }
+  }
+
+  // If it's already a string value
+  if (typeof parsed === 'string' && parsed.trim().length > 0) {
+    return parsed.trim()
+  }
+
+  return 'Unknown'
+}
+
+/**
+ * Infer event type from title and description
+ */
+function inferEventType(title: string, description: string | null): string {
+  const text = `${title} ${description || ''}`.toLowerCase()
+
+  // Event types - ordered by specificity
+  if (/workshop/i.test(text)) return 'Workshop'
+  if (/meetup|meet\s*up/i.test(text)) return 'Meetup'
+  if (/conference|summit/i.test(text)) return 'Conference'
+  if (/meditation|yoga/i.test(text)) return 'Meditation'
+  if (/ceremony/i.test(text)) return 'Ceremony'
+  if (/discussion|debate|panel|talk/i.test(text)) return 'Discussion'
+  if (/demo\s*day/i.test(text)) return 'Demo Day'
+  if (/screening/i.test(text)) return 'Screening'
+  if (/deepwork|deep\s*work|pomodoro/i.test(text)) return 'Deepwork'
+  if (/sport|volleyball|badminton|run\s*club/i.test(text)) return 'Sports'
+  if (/social|mixer|gathering/i.test(text)) return 'Social'
+  if (/forum/i.test(text)) return 'Forum'
+  if (/pop[-\s]*up/i.test(text)) return 'Pop-Up'
+
+  return 'Event'
+}
+
+/**
+ * Format time in 12-hour format from date
+ * Converts UTC timestamp to user's local timezone
+ */
+function formatTime(isoTimestamp: string, date?: Date): string {
+  // Use Date object to convert UTC timestamp to local timezone
+  const dateObj = date || new Date(isoTimestamp)
+
+  const hours = dateObj.getHours()
+  const minutes = dateObj.getMinutes()
+  const period = hours >= 12 ? 'PM' : 'AM'
+  const hours12 = hours % 12 || 12
+  const paddedMinutes = minutes.toString().padStart(2, '0')
+
+  return `${hours12}:${paddedMinutes} ${period}`
+}
+
+/**
+ * Extract date in user's local timezone from ISO timestamp
+ * Converts the UTC timestamp to the user's timezone and returns YYYY-MM-DD
+ */
+function extractLocalDate(isoTimestamp: string): string {
+  const date = new Date(isoTimestamp)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+/**
+ * Detect if event is from Ipê City based on title or location
+ */
+function isIpeCityEvent(title: string, city: string | null, address: string | null): boolean {
+  const searchText = `${title} ${city || ''} ${address || ''}`.toLowerCase()
+  return /ip[eê]\s*city|ip[eê]\s*village|ip[eê]\s*breakfast/i.test(searchText)
+}
+
+/**
+ * Detect if event is from Logos based on title or organizers
+ */
+function isLogosEvent(title: string, organizers: Array<{ name: string }> | string | null): boolean {
+  // Check title for Logos Circle or Logos-related keywords (including Spanish "Círculo Logos")
+  if (/logos\s*circle|c[íi]rculo\s*logos|parallel\s*society\s*festival/i.test(title)) {
+    return true
+  }
+
+  // Check if any organizer contains "Logos" or is a known Logos organizer
+  if (organizers) {
+    let parsed = organizers
+    if (typeof organizers === 'string') {
+      try {
+        parsed = JSON.parse(organizers)
+      } catch {
+        return false
+      }
+    }
+
+    if (Array.isArray(parsed)) {
+      return parsed.some(org => {
+        const name = typeof org === 'object' && org.name ? org.name : org
+        if (typeof name === 'string') {
+          const nameLower = name.toLowerCase()
+          // Check for "Logos" in name or known Logos organizers
+          return nameLower.includes('logos') || nameLower.includes('isaac warburton')
+        }
+        return false
+      })
+    }
+  }
+
+  return false
+}
+
+/**
+ * Detect if event is from Arc based on organizers or title
+ */
+function isArcEvent(title: string, organizers: Array<{ name: string }> | string | null): boolean {
+  // Check title for Arc-specific patterns (handles events with missing organizer data)
+  const titleLower = title.toLowerCase()
+  const titleNormalized = titleLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  
+  // Arc-specific title patterns (excluding "architect" terms)
+  if (
+    (titleNormalized.includes('arc ascend') || 
+     titleNormalized.includes('arc accelerat') ||
+     titleLower.startsWith('ârc:') ||
+     titleLower.startsWith('ârc -') ||
+     titleLower.startsWith('[ârc') ||
+     titleLower.startsWith('startup societies:') ||
+     titleLower.startsWith('startup societies series:') ||
+     (titleLower.includes('how to raise money') && !titleLower.includes('for your token')) ||
+     titleLower === 'how to raise money') &&
+    !titleNormalized.includes('architect') &&
+    !titleNormalized.includes('architecture')
+  ) {
+    return true
+  }
+
+  // Check if any organizer contains "Arc" (case-insensitive, excluding architectural terms)
+  if (organizers) {
+    let parsed = organizers
+    if (typeof organizers === 'string') {
+      try {
+        parsed = JSON.parse(organizers)
+      } catch {
+        return false
+      }
+    }
+
+    if (Array.isArray(parsed)) {
+      return parsed.some(org => {
+        const name = typeof org === 'object' && org.name ? org.name : org
+        if (typeof name === 'string') {
+          const nameLower = name.toLowerCase()
+          // Normalize accented characters (Ârc -> arc)
+          const normalized = nameLower.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          // Check for "arc" but not "architect" or "architecture"
+          if (normalized.includes('arc') && !normalized.includes('architect') && !normalized.includes('architecture')) {
+            return true
+          }
+        }
+        return false
+      })
+    }
+  }
+
+  return false
+}
+
+/**
+ * Organization slug to location mapping for Sola.day events
+ * Includes timezone information for proper event time display
+ */
+const ORGANIZATION_LOCATIONS: Record<string, { city: string; country: string; timezone?: string }> = {
+  'edgepatagonia': { city: 'El Chaltén', country: 'Argentina', timezone: 'America/Argentina/Buenos_Aires' },
+  '4seas': { city: 'Chiang Mai', country: 'Thailand', timezone: 'Asia/Bangkok' },
+  'prospera': { city: 'Próspera', country: 'Honduras', timezone: 'America/Tegucigalpa' },
+  'Prospera-events': { city: 'Próspera', country: 'Honduras', timezone: 'America/Tegucigalpa' },
+  'infinitacity': { city: 'INFINITA City', country: 'Argentina', timezone: 'America/Argentina/Buenos_Aires' },
+  'zuzalucity': { city: 'Zuzalu City', country: 'Montenegro', timezone: 'Europe/Podgorica' },
+  'invisiblegardenar': { city: 'Invisible Garden', country: 'Argentina', timezone: 'America/Argentina/Buenos_Aires' },
+  'arc': { city: 'Various', country: 'Global' }, // Arc events are typically global
+}
+
+/**
+ * Infer timezone from organization/city for Sola.day events
+ * Used as fallback when event doesn't have timezone set
+ */
+function inferTimezone(dbEvent: DatabaseEvent): string | null {
+  // Only infer for Sola.day events
+  if (dbEvent.source !== 'soladay') {
+    return null
+  }
+
+  // Try to match by city field (organization slug)
+  if (dbEvent.city && ORGANIZATION_LOCATIONS[dbEvent.city]?.timezone) {
+    return ORGANIZATION_LOCATIONS[dbEvent.city].timezone ?? null
+  }
+
+  return null
+}
+
+/**
+ * Generate Google Maps link from location data
+ */
+function generateMapsLink(dbEvent: DatabaseEvent): string | null {
+  // Priority 1: Use lat/lng if available (most accurate)
+  if (dbEvent.lat && dbEvent.lng) {
+    return `https://www.google.com/maps?q=${dbEvent.lat},${dbEvent.lng}`
+  }
+
+  // Priority 2: Use exact address for Luma events
+  if (dbEvent.source === 'luma' && dbEvent.address && !dbEvent.address.includes('http')) {
+    let query = ''
+
+    // Check if address already contains full details (has comma or is long)
+    const isDetailedAddress = dbEvent.address.includes(',') || dbEvent.address.length > 50
+
+    if (isDetailedAddress) {
+      // Address already has full details, use it as-is
+      query = dbEvent.address
+    } else {
+      // Address is just venue/building name, combine with city and country
+      // Don't duplicate venue_name if it's the same as address
+      const parts = []
+
+      if (dbEvent.address && dbEvent.address !== dbEvent.venue_name) {
+        parts.push(dbEvent.address)
+      } else if (dbEvent.venue_name) {
+        parts.push(dbEvent.venue_name)
+      }
+
+      // Add city and country if address doesn't already contain them
+      if (dbEvent.city && !dbEvent.address.toLowerCase().includes(dbEvent.city.toLowerCase())) {
+        parts.push(dbEvent.city)
+      }
+      if (dbEvent.country && !dbEvent.address.toLowerCase().includes(dbEvent.country.toLowerCase())) {
+        parts.push(dbEvent.country)
+      }
+
+      query = parts.join(', ')
+    }
+
+    if (query) {
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
+    }
+  }
+
+  // Priority 3: Use organization location for Sola.day events
+  if (dbEvent.source === 'soladay' && dbEvent.city) {
+    const orgLocation = ORGANIZATION_LOCATIONS[dbEvent.city]
+    if (orgLocation) {
+      const query = encodeURIComponent(`${orgLocation.city}, ${orgLocation.country}`)
+      return `https://www.google.com/maps/search/?api=1&query=${query}`
+    }
+  }
+
+  return null
+}
+
+/**
+ * Organization slugs/keywords that Luma uses in city field (not real cities)
+ * These indicate the event is associated with an organization, not a physical location
+ */
+const LUMA_ORG_KEYWORDS = ['ipecity', 'logos', 'networkschool', 'prospera']
+
+/**
+ * Check if a city value is actually an organization slug or contains org keywords
+ */
+function isOrgSlug(city: string | null): boolean {
+  if (!city) return false
+  const cityLower = city.toLowerCase()
+  
+  // Check if city exactly matches or contains any org keyword
+  return LUMA_ORG_KEYWORDS.some(keyword => 
+    cityLower === keyword || cityLower.includes(keyword)
+  )
+}
+
+/**
+ * Check if an event has any real physical location data
+ */
+function hasPhysicalLocation(dbEvent: DatabaseEvent): boolean {
+  // Check if venue name exists and is not a URL
+  const hasValidVenue = !!(dbEvent.venue_name && 
+                        !dbEvent.venue_name.includes('http') && 
+                        dbEvent.venue_name.trim().length > 0)
+  
+  // Check if address exists and is not a URL
+  const hasValidAddress = !!(dbEvent.address && 
+                          !dbEvent.address.includes('http') && 
+                          dbEvent.address.trim().length > 0)
+  
+  // Check if city exists, is not a URL, and is not an org slug
+  const hasValidCity = !!(dbEvent.city && 
+                       !dbEvent.city.includes('http') && 
+                       dbEvent.city.trim().length > 0 &&
+                       !isOrgSlug(dbEvent.city))
+  
+  return hasValidVenue || hasValidAddress || hasValidCity
+}
+
+/**
+ * Format location string for display, with truncation
+ */
+function formatLocation(dbEvent: DatabaseEvent, maxLength: number = 40): string {
+  let location = ''
+
+  // For Luma events with venue name
+  if (dbEvent.venue_name && !dbEvent.venue_name.includes('http')) {
+    location = dbEvent.venue_name
+  }
+  // For Luma events with address
+  else if (dbEvent.address && !dbEvent.address.includes('http')) {
+    location = dbEvent.address
+  }
+  // For Sola.day events, use mapped location
+  else if (dbEvent.source === 'soladay' && dbEvent.city) {
+    const orgLocation = ORGANIZATION_LOCATIONS[dbEvent.city]
+    if (orgLocation) {
+      location = orgLocation.city
+    } else {
+      location = dbEvent.city
+    }
+  }
+  // Fallback to city (but skip organization slugs)
+  else if (dbEvent.city && !dbEvent.city.includes('http') && !isOrgSlug(dbEvent.city)) {
+    location = dbEvent.city
+  }
+  // For Luma (and other sources), if no physical location data exists, mark as Virtual
+  else if (!hasPhysicalLocation(dbEvent)) {
+    location = 'Virtual'
+  }
+  // Final fallback
+  else {
+    location = 'TBD'
+  }
+
+  // Truncate if too long
+  if (location.length > maxLength) {
+    location = location.substring(0, maxLength) + '...'
+  }
+
+  return location
+}
+
+/**
+ * Get country for event (with Sola.day organization mapping)
+ */
+function getCountry(dbEvent: DatabaseEvent): string {
+  // Luma events usually have country
+  if (dbEvent.country) {
+    return dbEvent.country
+  }
+
+  // For Sola.day events, map from organization slug
+  if (dbEvent.source === 'soladay' && dbEvent.city) {
+    const orgLocation = ORGANIZATION_LOCATIONS[dbEvent.city]
+    if (orgLocation) {
+      return orgLocation.country
+    }
+  }
+
+  return 'Unknown'
+}
+
+/**
+ * Transform a database event to UI format
+ * Date and time are formatted on client-side to ensure correct timezone
+ */
+function transformEvent(dbEvent: DatabaseEvent): UIEvent {
+  const startDate = new Date(dbEvent.start_at)
+  const endDate = new Date(dbEvent.end_at)
+
+  // Temporary server-side date/time formatting (will be replaced client-side)
+  // These are just placeholders that will be overridden on the client
+  const date = extractLocalDate(dbEvent.start_at)
+  const startTime = formatTime(dbEvent.start_at, startDate)
+  const endTime = formatTime(dbEvent.end_at, endDate)
+  const time = `${startTime} – ${endTime}`
+
+  // Format location with truncation
+  const location = formatLocation(dbEvent)
+
+  // Generate Google Maps link
+  const mapsLink = generateMapsLink(dbEvent)
+
+  // Get country (with Sola.day organization mapping)
+  const country = getCountry(dbEvent)
+
+  // Parse network state from organizers field
+  // Override with specific network states for special cases
+  let networkState = parseNetworkState(dbEvent.organizers)
+
+  // Don't override networkState for Commons - we'll show it as a badge instead
+  // This prevents duplication of "Commons" text
+  if (isIpeCityEvent(dbEvent.title, dbEvent.city, dbEvent.address)) {
+    networkState = 'Ipê City'
+  } else if (isLogosEvent(dbEvent.title, dbEvent.organizers)) {
+    networkState = 'Logos'
+  } else if (isArcEvent(dbEvent.title, dbEvent.organizers)) {
+    networkState = 'Ârc'
+  }
+
+  // Apply network state name normalization/mapping
+  // This ensures organizer names like "Angelo" get mapped to "build_republic"
+  networkState = normalizeSocietyName(networkState)
+
+  // Infer event type from title and description
+  const type = inferEventType(dbEvent.title, dbEvent.description)
+
+  // Use stored timezone, or infer from organization/city as fallback
+  const timezone = dbEvent.timezone || inferTimezone(dbEvent) || undefined
+
+  return {
+    date,
+    time,
+    title: dbEvent.title,
+    location,
+    country,
+    networkState,
+    type,
+    url: dbEvent.source_url,
+    status: dbEvent.status,
+    mapsLink: mapsLink || undefined,
+    tags: dbEvent.tags,
+    // Include raw timestamps for client-side timezone conversion
+    start_at: dbEvent.start_at,
+    end_at: dbEvent.end_at,
+    timezone,
+    lat: dbEvent.lat,
+    lng: dbEvent.lng
+  }
+}
+
+/**
+ * Fetch all events (past and future) for stats (cached for 5 minutes)
+ * Server Action that can be called from Client Components
+ */
+const getCachedAllEvents = unstable_cache(
+  async (): Promise<UIEvent[]> => {
+    try {
+      const supabase = createServerClient()
+
+      const { data, error } = await supabase
+        .from('events')
+        .select(`
+          title,
+          description,
+          start_at,
+          end_at,
+          timezone,
+          venue_name,
+          address,
+          city,
+          country,
+          lat,
+          lng,
+          source,
+          source_url,
+          organizers,
+          tags,
+          image_url,
+          status
+        `)
+        .in('source', ['luma', 'soladay'])
+        .not('tags', 'cs', '{popup-city}')
+        .in('status', ['scheduled', 'tentative'])
+        .order('start_at', { ascending: false })
+        .limit(2000)
+
+      if (error) {
+        console.error('Error fetching all events from Supabase:', error)
+        return []
+      }
+
+      return (data as DatabaseEvent[]).map(transformEvent)
+    } catch (error) {
+      console.error('Error in getAllEvents:', error)
+      return []
+    }
+  },
+  ['events-all'],
+  { revalidate: 300 }
+)
+
+export async function getAllEvents(): Promise<UIEvent[]> {
+  return getCachedAllEvents()
+}
+
+/**
+ * Fetch all Network School events (past and future) for stats (cached for 5 minutes)
+ * Server Action that can be called from Client Components
+ */
+const getCachedAllNSEvents = unstable_cache(
+  async (): Promise<UIEvent[]> => {
+    try {
+      const supabase = createServerClient()
+
+      const { data, error } = await supabase
+        .from('events')
+        .select(`
+          title,
+          description,
+          start_at,
+          end_at,
+          timezone,
+          venue_name,
+          address,
+          city,
+          country,
+          lat,
+          lng,
+          source,
+          source_url,
+          organizers,
+          tags,
+          image_url,
+          status
+        `)
+        .in('source', ['luma', 'soladay'])
+        .not('tags', 'cs', '{popup-city}')
+        .in('status', ['scheduled', 'tentative'])
+        .order('start_at', { ascending: false })
+        .limit(2000)
+
+      if (error) {
+        console.error('Error fetching all NS events from Supabase:', error)
+        return []
+      }
+
+      const allEvents = (data as DatabaseEvent[]).map(transformEvent)
+      return allEvents.filter(event => event.networkState === 'Network School')
+    } catch (error) {
+      console.error('Error in getAllNetworkSchoolEvents:', error)
+      return []
+    }
+  },
+  ['events-network-school'],
+  { revalidate: 300 }
+)
+
+export async function getAllNetworkSchoolEvents(): Promise<UIEvent[]> {
+  return getCachedAllNSEvents()
+}
+
+/**
+ * Fetch events from Supabase (cached for 5 minutes)
+ * Server Action that can be called from Client Components
+ */
+const getCachedEvents = unstable_cache(
+  async (): Promise<UIEvent[]> => {
+    try {
+      const supabase = createServerClient()
+
+      // Calculate the cutoff date (2 days ago)
+      const twoDaysAgo = new Date()
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+
+      const { data, error } = await supabase
+        .from('events')
+        .select(`
+          title,
+          description,
+          start_at,
+          end_at,
+          timezone,
+          venue_name,
+          address,
+          city,
+          country,
+          lat,
+          lng,
+          source,
+          source_url,
+          organizers,
+          tags,
+          image_url,
+          status
+        `)
+        .in('source', ['luma', 'soladay'])
+        .not('tags', 'cs', '{popup-city}')
+        .in('status', ['scheduled', 'tentative'])
+        .gte('end_at', new Date().toISOString())
+        .gte('start_at', twoDaysAgo.toISOString())
+        .order('start_at', { ascending: true })
+        .limit(500)
+
+      if (error) {
+        console.error('Error fetching events from Supabase:', error)
+        return []
+      }
+
+      return (data as DatabaseEvent[]).map(transformEvent)
+    } catch (error) {
+      console.error('Error in getEvents:', error)
+      return []
+    }
+  },
+  ['events-upcoming'],
+  { revalidate: 300 }
+)
+
+export async function getEvents(): Promise<UIEvent[]> {
+  return getCachedEvents()
+}
+
+/**
+ * Fetch events for a specific organizer/network state
+ */
+export async function getEventsByOrganizer(organizerSlug: string): Promise<UIEvent[]> {
+  try {
+    const supabase = createServerClient()
+
+    const { data, error } = await supabase
+      .from('events')
+      .select(`
+        title,
+        description,
+        start_at,
+        end_at,
+        timezone,
+        venue_name,
+        address,
+        city,
+        country,
+        lat,
+        lng,
+        source,
+        source_url,
+        organizers,
+        tags,
+        image_url
+      `)
+      .gte('start_at', new Date().toISOString())
+      // Filter by organizer - adjust this based on your data structure
+      .or(`source_url.ilike.%${organizerSlug}%,organizers.cs.{${organizerSlug}}`)
+      .order('start_at', { ascending: true })
+      .limit(100)
+
+    if (error) {
+      console.error('Error fetching events by organizer:', error)
+      return []
+    }
+
+    return (data as DatabaseEvent[]).map(transformEvent)
+  } catch (error) {
+    console.error('Error in getEventsByOrganizer:', error)
+    return []
+  }
+}
+
+/**
+ * Transform a database event to popup city format
+ */
+function transformPopupCity(dbEvent: DatabaseEvent): PopupCity {
+  // Extract dates in local timezone (preserves original dates without UTC shift)
+  const date = extractLocalDate(dbEvent.start_at)
+  const endDateStr = extractLocalDate(dbEvent.end_at)
+
+  // Format location (prefer city, fallback to venue_name, address)
+  const location = dbEvent.city
+    ? `${dbEvent.city}${dbEvent.country ? ', ' + dbEvent.country : ''}`
+    : dbEvent.venue_name || dbEvent.address || 'TBD'
+
+  // Use same logic as location for network state
+  const networkState = location
+
+  return {
+    date,
+    endDate: endDateStr,
+    title: dbEvent.title,
+    location,
+    networkState,
+    url: dbEvent.source_url
+  }
+}
+
+/**
+ * Fetch popup cities from Supabase (cached for 5 minutes) and merge with manual events
+ * Filters by the "popup-city" tag
+ * @param pageFilter Optional page name to filter events (e.g., 'argentina'). Events without showInPages appear on all pages.
+ */
+const getCachedPopupCities = unstable_cache(
+  async (): Promise<PopupCity[]> => {
+    try {
+      const supabase = createServerClient()
+
+      const today = new Date()
+      const maxStartDate = new Date(today.getTime() + 365 * 24 * 60 * 60 * 1000)
+
+      const { data, error } = await supabase
+        .from('events')
+        .select(`
+          title,
+          description,
+          start_at,
+          end_at,
+          timezone,
+          venue_name,
+          address,
+          city,
+          country,
+          lat,
+          lng,
+          source,
+          source_url,
+          organizers,
+          tags,
+          image_url
+        `)
+        .contains('tags', ['popup-city'])
+        .gte('end_at', today.toISOString())
+        .lte('start_at', maxStartDate.toISOString())
+        .order('start_at', { ascending: true })
+        .limit(100)
+
+      if (error) {
+        console.error('Error fetching popup cities from Supabase:', error)
+        return manualPopupEvents
+      }
+
+      const databaseEvents = (data as DatabaseEvent[]).map(transformPopupCity)
+      const allEvents = [...databaseEvents, ...manualPopupEvents]
+      allEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+
+      return allEvents.filter((event, index, self) =>
+        index === self.findIndex((e) => e.title === event.title && e.date === event.date)
+      )
+    } catch (error) {
+      console.error('Error in getPopupCities:', error)
+      return manualPopupEvents
+    }
+  },
+  ['popup-cities'],
+  { revalidate: 300 }
+)
+
+export async function getPopupCities(pageFilter?: string): Promise<PopupCity[]> {
+  // For Argentina page, return only Argentina-specific events (no database events)
+  if (pageFilter === 'argentina') {
+    return [...argentinaPopupEvents].sort((a, b) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+    )
+  }
+
+  const allEvents = await getCachedPopupCities()
+
+  // Filter by page if specified
+  if (pageFilter) {
+    return allEvents.filter(event => {
+      if (event.showInPages && event.showInPages.length > 0) {
+        return event.showInPages.includes(pageFilter)
+      }
+      return true
+    })
+  }
+
+  return allEvents
+}

@@ -1,0 +1,46 @@
+import type { NextConfig } from "next";
+
+const isStagingEnv =
+  process.env.NSNODES_ENV === "staging" ||
+  process.env.VERCEL_ENV === "preview" ||
+  process.env.NEXT_PUBLIC_SITE_ENV === "staging";
+
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'qdzjcvbsfmznakbmfwfc.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.supabase.co',
+      },
+      // Keep Airtable for backwards compatibility during transition
+      {
+        protocol: 'https',
+        hostname: 'dl.airtable.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.airtableusercontent.com',
+      },
+    ],
+  },
+  async headers() {
+    if (!isStagingEnv) return [];
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow, noarchive, nosnippet",
+          },
+        ],
+      },
+    ];
+  },
+};
+
+export default nextConfig;
