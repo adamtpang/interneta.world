@@ -18,7 +18,7 @@ export default function GlobePage() {
           The Earth, and<br />her internet twin.
         </h1>
         <p className="font-mono text-lg text-foreground/80 leading-relaxed mb-12 max-w-2xl">
-          Every nation-state on the map gets an Interneta counterpart — a
+          Every nation-state on the map gets an Interneta counterpart. A
           network-state mirror, claimable by anyone willing to found one. Toggle
           the globe between physical Earth and the digital archipelago.
         </p>

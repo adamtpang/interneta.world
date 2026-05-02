@@ -1,28 +1,41 @@
 "use client";
 
-import Image from "next/image";
-import { useTheme } from "@/components/theme-provider";
+// Interneta wordmark: each letter cycles through the federation palette,
+// the way Olympic rings symbolize the bringing together of nations.
+const PALETTE = [
+  "var(--iw-cyan)",
+  "var(--iw-magenta)",
+  "var(--iw-gold)",
+  "var(--iw-green)",
+  "var(--iw-red)",
+  "var(--iw-indigo)",
+  "var(--iw-orange)",
+];
 
-type LogoImageProps = {
+const LETTERS = "INTERNETA".split("");
+
+type Props = {
   className?: string;
-  width?: number;
-  height?: number;
+  size?: "sm" | "md" | "lg";
 };
 
-export function LogoImage({ className, width = 220, height = 44 }: LogoImageProps) {
-  const { theme } = useTheme();
-  const src = theme === "dark" ? "/logo-light.png" : "/logo-dark.png";
+const SIZES: Record<NonNullable<Props["size"]>, string> = {
+  sm: "text-xl",
+  md: "text-2xl sm:text-3xl",
+  lg: "text-4xl sm:text-5xl",
+};
+
+export function LogoImage({ className = "", size = "md" }: Props) {
   return (
-    <Image
-      src={src}
-      alt="NSNodes"
-      width={width}
-      height={height}
-      priority
-      unoptimized
-      className={className ?? "h-auto w-[400px] max-w-full"}
-    />
+    <span
+      className={`font-mono font-bold tracking-[0.05em] ${SIZES[size]} ${className}`}
+      aria-label="Interneta"
+    >
+      {LETTERS.map((l, i) => (
+        <span key={i} style={{ color: PALETTE[i % PALETTE.length] }}>
+          {l}
+        </span>
+      ))}
+    </span>
   );
 }
-
-

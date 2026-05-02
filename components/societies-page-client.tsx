@@ -103,7 +103,7 @@ type SortKey =
   | 'name';
 
 const SORT_OPTIONS: { key: SortKey; label: string; why: string }[] = [
-  { key: 'weighted', label: 'Weighted Score', why: 'Quality × confidence — avoids 5-star-from-1-rater trap' },
+  { key: 'weighted', label: 'Weighted Score', why: 'Quality × confidence, avoids 5-star-from-1-rater trap' },
   { key: 'overall', label: 'Raw Overall', why: 'Unweighted average of all 6 community dimensions' },
   { key: 'scalability', label: 'Scalability', why: 'Coordination at scale without losing vibe' },
   { key: 'autonomy', label: 'Autonomy', why: 'Self-direction & exit rights' },
@@ -118,7 +118,7 @@ const SORT_OPTIONS: { key: SortKey; label: string; why: string }[] = [
 
 // Bayesian prior strength. Higher = more skeptical of raw scores without evidence.
 const BAYES_M = 20;
-// Neutral prior — societies with no confidence evidence get pulled toward this.
+// Neutral prior, societies with no confidence evidence get pulled toward this.
 const NEUTRAL_PRIOR = 50;
 
 // "Confidence" = quantity of evidence backing a society's scores.
@@ -317,7 +317,7 @@ export default function SocietiesPageClient({ societies }: { societies: SocietyD
         if (wB !== wA) return wB - wA;
         return a.tier - b.tier;
       }
-      // Score-based sorts (overall or single dimension) — missing scores sort last
+      // Score-based sorts (overall or single dimension), missing scores sort last
       const scoreA = getScoreForSort(a, sortKey);
       const scoreB = getScoreForSort(b, sortKey);
       if (scoreA == null && scoreB == null) return a.tier - b.tier;
@@ -424,7 +424,7 @@ export default function SocietiesPageClient({ societies }: { societies: SocietyD
                   {activeSort.label}
                 </span>
                 <span className="hidden sm:inline text-xs font-normal text-muted-foreground">
-                  — {activeSort.why}
+                 , {activeSort.why}
                 </span>
               </div>
               {sortMenuOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}

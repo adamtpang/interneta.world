@@ -194,6 +194,17 @@
   --palette-19: oklch(0.553 0.013 58.071);   /* stone-600 */
   --palette-default: oklch(0.446 0.043 257.281); /* slate-600 */
 
+  /* ── Interneta federation palette (7 colors of the federation) ──
+     Olympic-rings inspired. Each color claims one archetype of the
+     internet city-state movement. Used in the wordmark and as accents. */
+  --iw-cyan:    #06b6d4; /* I. Network (cloud, connection) */
+  --iw-magenta: #d946ef; /* II. Culture (art, identity) */
+  --iw-gold:    #eab308; /* III. Treasury (money, BTC, capital) */
+  --iw-green:   #16a34a; /* IV. Frontier (growth, new land) */
+  --iw-red:     #dc2626; /* V. Action (community, mobilization) */
+  --iw-indigo:  #4f46e5; /* VI. Sovereignty (governance, law) */
+  --iw-orange:  #ea580c; /* VII. Founder (energy, startup heat) */
+
   /* ── Timeline palette ── */
   --timeline-1: oklch(0.623 0.214 259.815);  /* blue-500 */
   --timeline-2: oklch(0.723 0.191 149.579);  /* green-500 */

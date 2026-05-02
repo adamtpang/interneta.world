@@ -41,7 +41,7 @@ export default function CitizensPage() {
             disabled
             className="border-2 border-border bg-muted text-muted-foreground px-6 py-3 font-mono font-bold text-base shadow-brutal-sm cursor-not-allowed"
           >
-            [ SIGN WITH WALLET — COMING SOON ]
+            [ SIGN WITH WALLET · COMING SOON ]
           </button>
           <p className="mt-4 font-mono text-xs text-muted-foreground">
             Wallet authentication will be wired up in v0.1. Check back, or join
@@ -74,7 +74,7 @@ export default function CitizensPage() {
             <Link href="/constitution" className="underline hover:text-foreground">
               Constitution
             </Link>{" "}
-            first. Then sign — or fork.
+            first. Then sign, or fork.
           </p>
         </div>
       </div>

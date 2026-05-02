@@ -87,7 +87,7 @@ export const vcDatabase: VCFirm[] = [
     {
       name: "Coinbase Ventures",
       contact: "",
-      description: "Coinbase’s investment arm — invests in crypto infrastructure, protocols, and Web3 applications.",
+      description: "Coinbase’s investment arm, invests in crypto infrastructure, protocols, and Web3 applications.",
       platforms: {
         website: "https://www.coinbase.com/ventures",
       },
@@ -188,7 +188,7 @@ export const vcDatabase: VCFirm[] = [
       name: "David Orban Ventures",
       contact: "David Orban",
       contactX: "https://x.com/davidorban",
-      description: "David Orban's personal investment and advisory platform — decentralisation, Web3, and digital governance initiatives.",
+      description: "David Orban's personal investment and advisory platform, decentralisation, Web3, and digital governance initiatives.",
       platforms: {
         website: "https://davidorban.com/",
       },
@@ -223,7 +223,7 @@ export const vcDatabase: VCFirm[] = [
       name: "Second Renaissance Fund",
       contact: "Thibault Serlet",
       contactX: "https://x.com/tserlet",
-      description: "Invests in decentralised, open-source, and crypto systems — supporting networked digital communities.",
+      description: "Invests in decentralised, open-source, and crypto systems, supporting networked digital communities.",
       platforms: {
         website: "https://secondrenaissance.com/",
       },

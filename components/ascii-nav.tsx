@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
@@ -29,21 +28,9 @@ export function AsciiNav() {
           <div className="flex items-center justify-between md:justify-center relative w-full">
             {/* Mobile: Logo on left, controls on right */}
             <div className="flex items-center justify-between w-full md:hidden">
-              <div className="flex items-center gap-2">
-                <Link href="/" className="block transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-brutal-md border-2 border-border">
-                  <Image
-                    src="/nsnodes-icon.png"
-                    alt="nsnodes icon"
-                    width={32}
-                    height={32}
-                    unoptimized
-                    className="h-8 w-8"
-                  />
-                </Link>
-                <Link href="/" className="hover:opacity-80 transition-opacity hidden sm:block">
-                  <LogoImage width={120} height={24} />
-                </Link>
-              </div>
+              <Link href="/" className="hover:opacity-80 transition-opacity">
+                <LogoImage size="sm" />
+              </Link>
               <div className="flex items-center gap-2 flex-shrink-0">
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -63,18 +50,8 @@ export function AsciiNav() {
             
             {/* Desktop: Centered logo with controls positioned absolutely within container */}
             <div className="hidden md:flex items-center justify-center relative w-full">
-              <Link href="/" className="absolute left-0 block transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none shadow-brutal-md border-2 border-border">
-                <Image
-                  src="/nsnodes-icon.png"
-                  alt="nsnodes icon"
-                  width={36}
-                  height={36}
-                  unoptimized
-                  className="h-9 w-9"
-                />
-              </Link>
               <Link href="/" className="hover:opacity-80 transition-opacity block">
-                <LogoImage />
+                <LogoImage size="lg" />
               </Link>
               <div className="absolute right-0 flex items-center gap-2">
                 {/* Desktop Theme Toggle */}

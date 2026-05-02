@@ -29,17 +29,17 @@ const manifesto = [
   {
     n: "III",
     title: "Cloud first, land last.",
-    body: "We don't conquer territory. We crowdfund it. A network state begins as a startup society, becomes a network union, materializes as a global archipelago of physical nodes, proves itself with an on-chain census, and earns recognition the same way Bitcoin did — by working.",
+    body: "We don't conquer territory. We crowdfund it. A network state begins as a startup society, becomes a network union, materializes as a global archipelago of physical nodes, proves itself with an on-chain census, and earns recognition the same way Bitcoin did, by working.",
   },
   {
     n: "IV",
     title: "One thousand commandments.",
-    body: "Every network state founds itself on a single moral inversion — a One Commandment. Interneta has none of its own. We are the federation that hosts them all. Keto Kosher and Bitcoin City and the post-FDA Society and the thousand others not yet named — each one a member, each one sovereign, each one bringing its own ten words to the union.",
+    body: "Every network state founds itself on a single moral inversion: a One Commandment. Interneta has none of its own. We are the federation that hosts them all. Keto Kosher and Bitcoin City and the post-FDA Society and the thousand others not yet named. Each one a member, each one sovereign, each one bringing its own ten words to the union.",
   },
   {
     n: "V",
     title: "Interneta is to network states what USDC is to the dollar.",
-    body: "A transition technology. USDC didn't replace USD — it gave it a new substrate. Interneta is the federated meta-layer that lets nation-state citizens migrate to network-state citizenship without renouncing what they came from. From America to Interneta. The values keep going.",
+    body: "A transition technology. USDC didn't replace USD. It gave it a new substrate. Interneta is the federated meta-layer that lets nation-state citizens migrate to network-state citizenship without renouncing what they came from. From America to Interneta. The values keep going.",
   },
   {
     n: "VI",
@@ -149,7 +149,7 @@ export default function Home() {
             ))}
           </ol>
           <p className="mt-8 font-mono text-sm text-muted-foreground italic">
-            — Adapted from Balaji Srinivasan, <em>The Network State</em>.
+            Adapted from Balaji Srinivasan, <em>The Network State</em>.
           </p>
         </div>
       </section>

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "A federation of internet city-states. Cloud first, land last. Recruit, not conquer. The optimistic meta-layer for network states.",
   metadataBase: new URL("https://interneta.world"),
   openGraph: {
-    title: "interneta.world — The United States of Interneta",
+    title: "interneta.world · The United States of Interneta",
     description:
       "A federation of internet city-states. The optimistic meta-layer for network states. From America to Interneta.",
     url: "https://interneta.world",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
         url: "/featured-image.png",
         width: 1200,
         height: 630,
-        alt: "Interneta — the United States of Interneta",
+        alt: "Interneta · the United States of Interneta",
       },
     ],
     locale: "en_US",
