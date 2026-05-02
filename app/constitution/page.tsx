@@ -11,7 +11,7 @@ const articles = [
   {
     n: "I",
     name: "Of the Polity",
-    body: "Interneta is a voluntary federation of internet city-states. Membership is opt-in, freely renounceable, and proven on-chain. No member is bound to Interneta by birth, geography, or coercion. The federation exists to coordinate — not to govern.",
+    body: "Interneta is a voluntary federation of internet city-states. Membership is opt-in, freely renounceable, and proven on-chain. No member is bound to Interneta by birth, geography, or coercion. The federation exists to coordinate — not to govern. Interneta itself has no One Commandment; that is the prerogative of each member state. The federation is plural by design.",
   },
   {
     n: "II",
@@ -26,7 +26,7 @@ const articles = [
   {
     n: "IV",
     name: "Of Member States",
-    body: "Any network state, network union, startup society, or self-governing internet community may petition to join Interneta as a member state. Admission requires a One Commandment, a recognized founder, a published charter, and proof of at least one in-person gathering. Member states retain full sovereignty over internal affairs.",
+    body: "Any network state, network union, startup society, or self-governing internet community may petition to join Interneta as a member state. Admission requires its own One Commandment, a recognized founder, a published charter, and proof of at least one in-person gathering. Member states retain full sovereignty over internal affairs. Interneta does not adjudicate between commandments; it hosts them.",
   },
   {
     n: "V",

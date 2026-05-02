@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://nsnodes.com";
+const SITE_URL = "https://interneta.world";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

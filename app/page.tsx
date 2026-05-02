@@ -33,8 +33,8 @@ const manifesto = [
   },
   {
     n: "IV",
-    title: "Birthright citizenship is obsolete.",
-    body: "Nation-state citizenship was assigned at birth, by accident of geography. Network-state citizenship is chosen, every day, by every member. The Interneta passport is consent, recorded on chain, refreshed by participation.",
+    title: "One thousand commandments.",
+    body: "Every network state founds itself on a single moral inversion — a One Commandment. Interneta has none of its own. We are the federation that hosts them all. Keto Kosher and Bitcoin City and the post-FDA Society and the thousand others not yet named — each one a member, each one sovereign, each one bringing its own ten words to the union.",
   },
   {
     n: "V",
