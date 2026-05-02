@@ -13,6 +13,7 @@ export function AsciiNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
+    { href: "/about", label: "[ ABOUT ]" },
     { href: "/constitution", label: "[ CONSTITUTION ]" },
     { href: "/citizens", label: "[ CITIZENS ]" },
     { href: "/globe", label: "[ GLOBE ]" },

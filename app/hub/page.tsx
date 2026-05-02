@@ -215,36 +215,25 @@ export default function Home() {
   return (
     <div className="space-y-12">
         {/* Hero Section */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-        <div className="space-y-4 text-left">
-          <pre className="text-xs sm:text-sm md:text-base font-mono leading-none opacity-80"></pre>
+        <section className="space-y-4">
+          <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground">
+            ::: THE DIRECTORY :::
+          </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-mono uppercase">
-            [ Making Network States Default ]
+            [ Member States of Interneta ]
           </h1>
-          <p className="text-muted-foreground font-mono text-sm sm:text-base">
-          We aggregate, analyze and accelerate the movement of building new countries.
+          <p className="text-muted-foreground font-mono text-sm sm:text-base max-w-3xl">
+          The directory of internet city-states, popup villages, and startup societies in the federation. We aggregate, analyze, and accelerate the movement.
           <br />
           <br />
-          The nation state is a 400-year-old technology. Network States are the upgrade. Built by founders, not conquerors. Joined by choice, not birth. Governed by code and consensus, not coercion. This is where the builders gather.           </p>
-        </div>
-        <div className="w-full flex justify-start md:justify-end">
-          <Image
-            src="/dontdare.png"
-            alt="Don't dare to raise me up in a nation state"
-            width={420}
-            height={280}
-            priority
-            unoptimized
-            className="h-auto max-w-full border-2 border-border shadow-brutal-md"
-          />
-        </div>
-      </section>
+          The nation state is a 400-year-old technology. The network state is the upgrade. Built by founders, not conquerors. Joined by choice, not birth. Governed by code and consensus, not coercion. This is where the builders gather.</p>
+        </section>
 
       {/* Top Network States */}
       <section className="space-y-6">
         <h2 className="text-xl sm:text-2xl font-bold font-mono flex items-center gap-2">
           <TrendingUp className="h-6 w-6" />
-          [ TOP NETWORK STATES ]
+          [ TOP MEMBER STATES ]
         </h2>
 
         {/* Loading State */}
@@ -380,7 +369,7 @@ export default function Home() {
       <section className="space-y-6">
         <h2 className="text-xl sm:text-2xl font-bold font-mono flex items-center gap-2">
           <Briefcase className="h-6 w-6" />
-          [ NETWORK STATE JOBS ]
+          [ CIVIL SERVICE · OPEN ROLES ]
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {featuredJobs.map((job, index) => (
@@ -418,16 +407,16 @@ export default function Home() {
             href="/jobs"
             className="font-mono text-xs underline underline-offset-4"
           >
-            See all {jobsDatabase.length} Network State Jobs →
+            See all {jobsDatabase.length} open roles →
           </Link>
         </div>
       </section>
 
-      {/* Network State VCs */}
+      {/* Treasury Allies */}
       <section className="space-y-6">
         <h2 className="text-xl sm:text-2xl font-bold font-mono flex items-center gap-2">
           <DollarSign className="h-6 w-6" />
-          [ VC ]
+          [ TREASURY ALLIES ]
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {featuredVCs.map((vc, index) => (
@@ -471,7 +460,7 @@ export default function Home() {
             href="/vc"
             className="font-mono text-xs underline underline-offset-4"
           >
-            See all {vcDatabase.length} VCs →
+            See all {vcDatabase.length} treasury allies →
           </Link>
         </div>
       </section>

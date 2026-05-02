@@ -111,6 +111,38 @@
   --shadow-brutal-xl: var(--brutal-shadow-xl);
 }
 
+/* Print stylesheet: clean PDF when "Save as PDF" is selected */
+@media print {
+  nav,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+  a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+  /* Avoid awkward page breaks inside articles. */
+  article,
+  li {
+    break-inside: avoid;
+  }
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+}
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

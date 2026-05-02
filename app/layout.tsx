@@ -53,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="overflow-x-hidden dark">
+    <html lang="en" suppressHydrationWarning className="overflow-x-hidden">
       <head>
         {isStaging && (
           <>
@@ -68,12 +68,12 @@ export default function RootLayout({
           </>
         )}
         <meta name="x-deploy-check" content="2026-04-21-prod" />
-        {/* Set dark mode as default before hydration to prevent flash */}
+        {/* Light mode is the default for Interneta */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                const theme = localStorage.getItem('theme') || 'dark';
+                const theme = localStorage.getItem('theme') || 'light';
                 document.documentElement.classList.remove('light', 'dark');
                 document.documentElement.classList.add(theme);
               } catch (e) {}
@@ -85,7 +85,7 @@ export default function RootLayout({
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased min-h-screen overflow-x-hidden flex flex-col`}
         suppressHydrationWarning
       >
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme="light">
           <div className="relative z-50">
             <AsciiNav />
           </div>

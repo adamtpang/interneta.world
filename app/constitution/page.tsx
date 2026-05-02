@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PrintButton } from "@/components/print-button";
 
 export const metadata: Metadata = {
   title: "Constitution | interneta.world",
@@ -288,12 +289,24 @@ export default function ConstitutionPage() {
           <PaletteStripe />
         </div>
 
-        <p className="font-mono text-sm text-muted-foreground leading-relaxed mb-12 max-w-2xl">
+        <p className="font-mono text-sm text-muted-foreground leading-relaxed mb-8 max-w-2xl">
           A working constitution for a federation of internet city-states.
           Adapted from the Constitution of the United States of America (1789)
           and from the framework laid out in <em>The Network State</em> (Balaji
           Srinivasan, 2022). Open to forks, pull requests, and ratification.
         </p>
+
+        <div className="flex flex-wrap gap-3 mb-12 no-print">
+          <PrintButton label="[ DOWNLOAD AS PDF ]" />
+          <a
+            href="https://github.com/adamtpang/interneta.world/blob/main/research/interneta-constitution.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border-2 border-border bg-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-6 py-3 font-mono font-bold text-base"
+          >
+            [ VIEW ON GITHUB ]
+          </a>
+        </div>
 
         {/* Preamble */}
         <div className="border-2 border-border bg-background shadow-brutal-md p-6 sm:p-8 mb-16 font-mono">
