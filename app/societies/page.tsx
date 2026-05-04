@@ -1,12 +1,13 @@
-import { getSocieties } from '@/lib/actions/societies';
-import SocietiesPageClient from '@/components/societies-page-client';
-import { generatePageMetadata } from '@/lib/utils/metadata';
+import { getSocieties } from "@/lib/actions/societies";
+import { SocietiesNomadView } from "@/components/societies-nomad-view";
+import { generatePageMetadata } from "@/lib/utils/metadata";
 
-// Static page title - independent of H1 text in the page component
-export const metadata = generatePageMetadata("Network State Dashboard & Societies List");
+export const metadata = generatePageMetadata(
+  "Societies · Find your internet city-state",
+  "Every startup society, popup village, and network state we track. Scored on six dimensions. Filter by region, vibe, and Federation Score."
+);
 
 export default async function SocietiesPage() {
   const societies = await getSocieties();
-
-  return <SocietiesPageClient societies={societies} />;
+  return <SocietiesNomadView societies={societies} />;
 }
