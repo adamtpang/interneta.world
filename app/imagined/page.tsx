@@ -104,16 +104,24 @@ export default function ImaginedPage() {
           {IMAGINED_STATES.map((s, i) => {
             const accent = PALETTE[s.paletteIndex % PALETTE.length];
             return (
-              <article
+              <Link
                 key={`${s.founder}-${s.stateName}`}
-                className="border-2 border-border bg-background shadow-brutal-md p-5 sm:p-6 flex flex-col gap-4"
+                href={`/imagined/${s.slug}`}
+                className="group border-2 border-border bg-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all p-5 sm:p-6 flex flex-col gap-4"
               >
-                <div
-                  className="font-mono text-[10px] tracking-[0.3em] uppercase pb-2 border-b-2"
-                  style={{ borderColor: accent, color: accent }}
-                >
-                  #{String(i + 1).padStart(3, "0")} · {s.stateName}
+                <div className="flex items-start justify-between gap-3">
+                  <div
+                    className="font-mono text-[10px] tracking-[0.3em] uppercase pb-2"
+                    style={{ color: accent }}
+                  >
+                    #{String(i + 1).padStart(3, "0")}
+                  </div>
+                  <div className="text-4xl" aria-hidden>
+                    {s.themeIcon}
+                  </div>
                 </div>
+
+                <div className="border-b-2 -mt-3" style={{ borderColor: accent }} />
 
                 <h2
                   className="font-mono font-bold text-3xl sm:text-4xl leading-[0.95] tracking-tight"
@@ -137,22 +145,28 @@ export default function ImaginedPage() {
                   &ldquo;{s.oneCommandment}&rdquo;
                 </blockquote>
 
-                <p className="text-sm text-foreground/80 leading-relaxed">
+                <p className="text-sm text-foreground/80 leading-relaxed line-clamp-4">
                   {s.theme}
                 </p>
 
                 <div className="font-mono text-xs space-y-2 mt-auto pt-3 border-t-2 border-border">
                   <div>
                     <span className="text-muted-foreground">Citizens · </span>
-                    {s.citizens}
+                    <span className="line-clamp-1">{s.citizens}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span>{locationFlag(s.capital)}</span>
                     <span className="text-muted-foreground">Capital ·</span>
                     <span className="font-bold">{s.capital}</span>
                   </div>
+                  <div
+                    className="text-[10px] tracking-[0.2em] mt-2 group-hover:underline"
+                    style={{ color: accent }}
+                  >
+                    [ READ THE PROFILE → ]
+                  </div>
                 </div>
-              </article>
+              </Link>
             );
           })}
         </div>

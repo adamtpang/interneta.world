@@ -15,11 +15,11 @@ export function AsciiNav() {
   const navItems = [
     { href: "/about", label: "[ ABOUT ]" },
     { href: "/constitution", label: "[ CONSTITUTION ]" },
-    { href: "/citizens", label: "[ CITIZENS ]" },
     { href: "/globe", label: "[ GLOBE ]" },
     { href: "/societies", label: "[ STATES ]" },
     { href: "/imagined", label: "[ IMAGINED ]" },
-    { href: "/anthem", label: "[ ANTHEM ]" },
+    { href: "/world", label: "[ WORLD ]" },
+    { href: "/citizens", label: "[ CITIZENS ]" },
   ];
 
   return (
