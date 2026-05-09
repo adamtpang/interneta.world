@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 export type GlobeMarker = {
   location: [number, number]; // [lat, lng]
   size: number; // 0..1
+  color?: [number, number, number];
 };
 
 export type GlobeView = "earth" | "archipelago";

@@ -76,3 +76,8 @@ node_modules/
 .trae/
 .windsurf/
 .zencoder/
+
+# Claude Code worktrees (may contain API keys in settings.local.json)
+.claude/worktrees/
+.claude/settings.local.json
+.claude/settings.local.json*

@@ -6,7 +6,7 @@ import { NETWORK_STATE_LOCATIONS } from "@/lib/data/network-state-locations";
 export const metadata: Metadata = {
   title: "Globe | interneta.world",
   description:
-    "The Earth and her internet twin, the Archipelago. Spin between physical nation-states and digital network-states.",
+    "The Earth and her internet twin, the Archipelago. Spin between physical nation-states and digital network-states. Drop a pin where you are.",
   alternates: { canonical: "https://interneta.world/globe" },
 };
 
@@ -32,6 +32,13 @@ export default function GlobePage() {
       networkStates={NETWORK_STATE_LOCATIONS.map((n) => ({
         name: n.name,
         location: n.location,
+        url: n.url,
+      }))}
+      networkStateGeo={NETWORK_STATE_LOCATIONS.map((n) => ({
+        name: n.name,
+        location: n.location,
+        lat: n.lat,
+        lng: n.lng,
         url: n.url,
       }))}
     />

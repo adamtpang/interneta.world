@@ -17,7 +17,8 @@ export function AsciiNav() {
     { href: "/constitution", label: "[ CONSTITUTION ]" },
     { href: "/citizens", label: "[ CITIZENS ]" },
     { href: "/globe", label: "[ GLOBE ]" },
-    { href: "/hub", label: "[ STATES ]" },
+    { href: "/societies", label: "[ STATES ]" },
+    { href: "/imagined", label: "[ IMAGINED ]" },
     { href: "/anthem", label: "[ ANTHEM ]" },
   ];
 
