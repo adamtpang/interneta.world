@@ -31,12 +31,24 @@ See `app/`, `components/`, `lib/` — the layout follows nsnodes conventions. Wh
 | Route            | Purpose                                                          |
 |------------------|------------------------------------------------------------------|
 | `/`              | Manifesto homepage. Hero + preamble + 7-step path + CTA strip.   |
-| `/constitution`  | v0 Constitution + Bill of Rights. Pure server component.         |
-| `/citizens`      | Citizen affirmation + census. Wallet auth coming v0.1.           |
-| `/globe`         | Spinning globe (placeholder). react-globe.gl coming v0.1.        |
-| `/anthem`        | Anthem submissions + voting. Form wiring v0.1.                   |
-| `/hub`           | The OLD nsnodes home — preserved as the network-state directory. |
-| `/societies`, `/events`, `/jobs`, `/funding`, `/contact`, etc. | All inherited from nsnodes. Still functional. May be re-skinned to Interneta vocabulary. |
+| `/about`         | Thesis, TNS credit, Dalio why-now, movement timeline, reading list. |
+| `/success`       | "How do you measure a state?" GDP argument (internet = #3 economy) + Dalio's 8 measures ported. |
+| `/compare`       | All 195 nation-states vs all tracked network states. Per-decade founding chart + both full rosters. |
+| `/constitution`  | 14 articles + Bill of Rights. PDF download via print stylesheet. |
+| `/citizens`      | Citizen affirmation + census. Wallet auth deferred (no auth for now). |
+| `/globe`         | cobe globe: Earth ↔ Archipelago toggle + Find-Me geolocation pin. |
+| `/societies`     | Nomadlist-style stat cards (Federation Score, six dimensions).   |
+| `/imagined`      | Speculative 1000 catalog + `/imagined/[slug]` founder profiles (outreach-ready). |
+| `/world`         | Nation-state internet mirrors + `/world/[slug]` country profiles (SEZs, founders, city sites). |
+| `/anthem`        | Anthem submissions + voting. Form wiring later.                  |
+| `/hub`           | The OLD nsnodes home — preserved as the member-state directory.  |
+| `/events`, `/jobs`, `/funding`, `/contact`, etc. | Inherited from nsnodes. Still functional. |
+
+## nsnodes relationship (agreement with Oskar / wagmi, June 2026)
+
+- Society data comes from the nsnodes pipeline. **Attribution is required**: "powered by nsnodes.com" appears on `/societies` and `/hub`. Keep it when redesigning those pages.
+- Oskar offered **API access to the nsnodes database** — when credentials arrive, wire `lib/actions/societies.ts` to their API instead of the static scrape in `lib/data/societies-full.ts`.
+- Never reference `/featured-image.png` in metadata (deleted; it was the old nsnodes OG card). The dynamic `app/opengraph-image.tsx` is the social card for every page unless a page supplies its own image.
 
 ## Brand voice
 

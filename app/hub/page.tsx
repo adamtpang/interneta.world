@@ -227,6 +227,18 @@ export default function Home() {
           <br />
           <br />
           The nation state is a 400-year-old technology. The network state is the upgrade. Built by founders, not conquerors. Joined by choice, not birth. Governed by code and consensus, not coercion. This is where the builders gather.</p>
+          <p className="font-mono text-xs text-muted-foreground">
+            Directory data powered by{" "}
+            <a
+              href="https://nsnodes.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              nsnodes.com
+            </a>
+            , the Network State Hub.
+          </p>
         </section>
 
       {/* Top Network States */}

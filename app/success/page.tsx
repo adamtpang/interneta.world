@@ -243,6 +243,14 @@ export default function SuccessPage() {
             </a>
             .
           </p>
+          <p className="mt-4">
+            <Link
+              href="/compare"
+              className="font-mono text-sm font-bold underline"
+            >
+              See all 195 nation-states vs all network states →
+            </Link>
+          </p>
         </section>
 
         {/* The thesis */}

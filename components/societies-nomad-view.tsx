@@ -416,6 +416,19 @@ export function SocietiesNomadView({
           </a>
           .
         </p>
+        <p className="font-bold text-foreground/70">
+          Society data powered by{" "}
+          <a
+            href="https://nsnodes.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            nsnodes.com
+          </a>
+          , the Network State Hub. Interneta is a friendly fork of the nsnodes
+          open-source codebase.
+        </p>
       </section>
     </div>
   );

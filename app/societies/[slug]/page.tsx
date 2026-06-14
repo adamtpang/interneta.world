@@ -122,11 +122,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const society = findSocietyBySlug(slug, data);
 
   if (!society) {
-    return { title: 'Society Not Found | nsnodes.com' };
+    return { title: 'Society Not Found | interneta.world' };
   }
 
   const content = SOCIETY_CONTENT[societyNameToSlug(society.name)];
-  const pageUrl = `https://nsnodes.com/societies/${slug}`;
+  const pageUrl = `https://interneta.world/societies/${slug}`;
 
   // Build a rich description from content if available
   const overviewText = content?.overview?.[0]?.text;
@@ -135,10 +135,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     : society.mission || `Explore ${society.name}, a ${society.type?.toLowerCase()} network state society.`;
 
   const TITLE_OVERRIDES: Record<string, string> = {
-    'network-school': 'Network School, Balajis ns.com Network State | nsnodes.com',
+    'network-school': 'Network School, Balajis ns.com Network State | interneta.world',
   };
 
-  const title = TITLE_OVERRIDES[slug] ?? `${society.name}, ${society.category || 'Network Society'} | nsnodes.com`;
+  const title = TITLE_OVERRIDES[slug] ?? `${society.name}, ${society.category || 'Network Society'} | interneta.world`;
 
   return {
     title,
@@ -150,15 +150,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title,
       description,
       url: pageUrl,
-      siteName: 'NSNodes',
-      images: [
-        {
-          url: society.icon || '/featured-image.png',
-          width: 400,
-          height: 400,
-          alt: society.name,
-        },
-      ],
+      siteName: 'Interneta',
+      // When the society has a logo, use it; otherwise fall back to the
+      // dynamic app/opengraph-image.tsx card by omitting images entirely.
+      ...(society.icon
+        ? {
+            images: [
+              { url: society.icon, width: 400, height: 400, alt: society.name },
+            ],
+          }
+        : {}),
       locale: 'en_US',
       type: 'article',
     },
@@ -166,7 +167,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: 'summary_large_image',
       title,
       description,
-      images: [society.icon || '/featured-image.png'],
+      ...(society.icon ? { images: [society.icon] } : {}),
     },
   };
 }
@@ -220,7 +221,7 @@ export default async function SocietyDetailPage({
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: society.name,
-    url: society.url || `https://nsnodes.com/societies/${slug}`,
+    url: society.url || `https://interneta.world/societies/${slug}`,
     description: society.mission,
     ...(society.icon && { logo: society.icon }),
     ...(society.founded && { foundingDate: society.founded }),

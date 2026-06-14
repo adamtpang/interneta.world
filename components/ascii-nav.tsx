@@ -15,6 +15,7 @@ export function AsciiNav() {
   const navItems = [
     { href: "/about", label: "[ ABOUT ]" },
     { href: "/success", label: "[ SUCCESS ]" },
+    { href: "/compare", label: "[ COMPARE ]" },
     { href: "/constitution", label: "[ CONSTITUTION ]" },
     { href: "/globe", label: "[ GLOBE ]" },
     { href: "/societies", label: "[ STATES ]" },
