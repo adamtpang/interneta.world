@@ -350,7 +350,7 @@ export default function SocietiesPageClient({ societies }: { societies: SocietyD
           {/* CTA Section */}
           <div className="pt-4">
             <a
-              href="mailto:nsnodes@gmail.com?subject=Network Society Listing Request&body=Hi, I'd like to list our Network State society on NSNodes. Please include: Society name, Location, Mission/description, Founding year, Number of residents, Growth rate, Website, X profile, Discord, Focus areas, and Application link."
+              href="mailto:adamtpang@gmail.com?subject=Network Society Listing Request&body=Hi, I'd like to list our Network State society on NSNodes. Please include: Society name, Location, Mission/description, Founding year, Number of residents, Growth rate, Website, X profile, Discord, Focus areas, and Application link."
               className="inline-block border-2 border-border px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-mono font-bold shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >
               [ LIST NETWORK SOCIETY ] →

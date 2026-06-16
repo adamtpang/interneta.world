@@ -3,9 +3,9 @@ import Link from "next/link";
 import { ArrowLeft, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "API Documentation for nsnodes.com API | nsnodes.com",
+  title: "API Documentation for interneta.world API | interneta.world",
   description:
-    "Complete API documentation for nsnodes.com. Learn how to authenticate, query Network State societies and events data, and integrate with your applications.",
+    "Complete API documentation for interneta.world. Learn how to authenticate, query Network State societies and events data, and integrate with your applications.",
 };
 
 export default function ApiDocPage() {
@@ -21,7 +21,7 @@ export default function ApiDocPage() {
           Back to API Overview
         </Link>
         <h1 className="text-3xl sm:text-4xl font-bold font-mono uppercase">
-          [ NSNodes API ]
+          [ Interneta API ]
         </h1>
         <p className="text-muted-foreground font-mono">
           Public read-only API for accessing societies and events data.
@@ -54,11 +54,11 @@ export default function ApiDocPage() {
         <pre className="bg-muted p-4 rounded text-xs font-mono overflow-x-auto">
 {`# Using Authorization header
 curl -H "Authorization: Bearer sk_live_xxx" \\
-  "https://nsnodes.com/api/v1/societies"
+  "https://interneta.world/api/v1/societies"
 
 # Using X-API-Key header
 curl -H "X-API-Key: sk_live_xxx" \\
-  "https://nsnodes.com/api/v1/societies"`}
+  "https://interneta.world/api/v1/societies"`}
         </pre>
       </section>
 
@@ -158,7 +158,7 @@ curl -H "X-API-Key: sk_live_xxx" \\
         <h3 className="font-mono font-bold text-sm mt-6">Example Request</h3>
         <pre className="bg-muted p-4 rounded text-xs font-mono overflow-x-auto">
 {`curl -H "Authorization: Bearer sk_live_xxx" \\
-  "https://nsnodes.com/api/v1/societies?type=Physical&tier=1&limit=10"`}
+  "https://interneta.world/api/v1/societies?type=Physical&tier=1&limit=10"`}
         </pre>
 
         <h3 className="font-mono font-bold text-sm mt-6">Example Response</h3>
@@ -323,7 +323,7 @@ curl -H "X-API-Key: sk_live_xxx" \\
         <h3 className="font-mono font-bold text-sm mt-6">Example Request</h3>
         <pre className="bg-muted p-4 rounded text-xs font-mono overflow-x-auto">
 {`curl -H "Authorization: Bearer sk_live_xxx" \\
-  "https://nsnodes.com/api/v1/events?city=London&start_after=2025-02-01T00:00:00Z"`}
+  "https://interneta.world/api/v1/events?city=London&start_after=2025-02-01T00:00:00Z"`}
         </pre>
 
         <h3 className="font-mono font-bold text-sm mt-6">Example Response</h3>
@@ -432,7 +432,7 @@ curl -H "X-API-Key: sk_live_xxx" \\
             </p>
           </div>
           <a
-            href="mailto:nsnodes@gmail.com?subject=API%20Access%20Request"
+            href="mailto:adamtpang@gmail.com?subject=API%20Access%20Request"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-mono font-bold border-2 border-border shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all whitespace-nowrap"
           >
             <Mail className="h-4 w-4" />

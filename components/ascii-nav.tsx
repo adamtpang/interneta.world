@@ -13,14 +13,14 @@ export function AsciiNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { href: "/about", label: "[ ABOUT ]" },
-    { href: "/success", label: "[ SUCCESS ]" },
-    { href: "/compare", label: "[ COMPARE ]" },
-    { href: "/constitution", label: "[ CONSTITUTION ]" },
-    { href: "/globe", label: "[ GLOBE ]" },
-    { href: "/societies", label: "[ STATES ]" },
+    { href: "/explore", label: "[ EXPLORE ]" },
     { href: "/imagined", label: "[ IMAGINED ]" },
     { href: "/world", label: "[ WORLD ]" },
+    { href: "/playbook", label: "[ PLAYBOOK ]" },
+    { href: "/constitution", label: "[ CONSTITUTION ]" },
+    { href: "/globe", label: "[ GLOBE ]" },
+    { href: "/success", label: "[ SUCCESS ]" },
+    { href: "/about", label: "[ ABOUT ]" },
     { href: "/citizens", label: "[ CITIZENS ]" },
   ];
 

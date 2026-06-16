@@ -280,7 +280,7 @@ export default function ArgentinaPage() {
           {/* CTA Button */}
           <div className="pt-4">
             <a
-              href="mailto:nsnodes@gmail.com?subject=Event Listing Request - Argentina&body=Hi, I'd like to list an event in Argentina. Please include: Event name, Date, Time, Location, Description, and Registration link."
+              href="mailto:adamtpang@gmail.com?subject=Event Listing Request - Argentina&body=Hi, I'd like to list an event in Argentina. Please include: Event name, Date, Time, Location, Description, and Registration link."
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border-2 border-border px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-mono font-bold shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >
               [ SUBMIT EVENT ]
@@ -376,7 +376,7 @@ export default function ArgentinaPage() {
         </p>
         <div className="flex justify-center pt-4">
           <a
-            href="mailto:nsnodes@gmail.com?subject=Event Listing Request - Argentina&body=Hi, I'd like to list an event in Argentina. Please include: Event name, Date, Time, Location, Description, and Registration link."
+            href="mailto:adamtpang@gmail.com?subject=Event Listing Request - Argentina&body=Hi, I'd like to list an event in Argentina. Please include: Event name, Date, Time, Location, Description, and Registration link."
             className="px-6 py-3 border-2 border-border bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-mono shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
           >
             [ SUBMIT EVENT ]

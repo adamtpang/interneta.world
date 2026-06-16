@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Code, Database, Zap, Lock, Mail } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "nsnodes.com API | nsnodes.com",
+  title: "interneta.world API | interneta.world",
   description:
-    "Access the most comprehensive database of Network State societies and events. Build applications, integrations, and tools for the decentralized future.",
+    "Access the most federated directory of network-state societies and events. Build applications, integrations, and tools for the decentralized future.",
 };
 
 export default function ApiPage() {
@@ -14,10 +14,10 @@ export default function ApiPage() {
       {/* Hero Section */}
       <section className="space-y-6 text-center max-w-3xl mx-auto">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-mono uppercase">
-          [ NSNodes API ]
+          [ Interneta API ]
         </h1>
         <p className="text-muted-foreground font-mono text-sm sm:text-base max-w-2xl mx-auto">
-          Access the most comprehensive database of Network State societies and
+          Access the most federated directory of network-state societies and
           events. Build applications, integrations, and tools for the
           decentralized future.
         </p>
@@ -135,7 +135,7 @@ export default function ApiPage() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
-            href="mailto:nsnodes@gmail.com?subject=API%20Access%20Request"
+            href="mailto:adamtpang@gmail.com?subject=API%20Access%20Request"
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-mono font-bold border-2 border-border shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all"
           >
             <Mail className="h-4 w-4" />

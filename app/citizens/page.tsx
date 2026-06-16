@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { InternetaPassport } from "@/components/interneta-passport";
 
 export const metadata: Metadata = {
   title: "Citizens | interneta.world",
   description:
-    "Claim Interneta citizenship. A soulbound passport NFT, a public affirmation, a place in the census.",
+    "Claim Interneta citizenship. A soulbound passport, a public affirmation, a place in the census. See the passport mockup.",
   alternates: { canonical: "https://interneta.world/citizens" },
 };
 
@@ -24,6 +25,14 @@ export default function CitizensPage() {
           renounce it at any time. There is no fee, no birthright, no border.
           There is only choice.
         </p>
+
+        {/* Passport mockup */}
+        <div className="mb-12">
+          <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-4">
+            ::: YOUR PASSPORT :::
+          </div>
+          <InternetaPassport />
+        </div>
 
         <div className="border-2 border-border bg-background shadow-brutal-md p-6 sm:p-8 mb-12">
           <div className="font-mono text-xs tracking-widest text-muted-foreground mb-4">

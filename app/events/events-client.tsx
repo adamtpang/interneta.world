@@ -146,7 +146,7 @@ export default function EventsPage() {
           {/* CTA Button */}
           <div className="pt-4">
             <a
-              href="mailto:nsnodes@gmail.com?subject=Event Listing Request&body=Hi, I'd like to list an event on NSNodes. Please include: Event name, Date, Time, Location, Description, and Registration link."
+              href="mailto:adamtpang@gmail.com?subject=Event Listing Request&body=Hi, I'd like to list an event on NSNodes. Please include: Event name, Date, Time, Location, Description, and Registration link."
               className="block w-full sm:inline-block sm:w-auto text-center border-2 border-border px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-mono font-bold shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
             >
               <span className="flex items-center justify-center gap-2">
@@ -240,7 +240,7 @@ export default function EventsPage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
           <a
-            href="mailto:nsnodes@gmail.com?subject=Event Listing Request&body=Hi, I'd like to list an event on NSNodes."
+            href="mailto:adamtpang@gmail.com?subject=Event Listing Request&body=Hi, I'd like to list an event on NSNodes."
             className="px-6 py-3 border-2 border-border bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-mono shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
           >
             [ SUBMIT EVENT ]

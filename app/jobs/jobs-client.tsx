@@ -185,7 +185,7 @@ export default function JobsPage() {
           {/* CTA Button */}
           <div className="flex justify-center lg:justify-start pt-4">
             <a
-              href="mailto:nsnodes@gmail.com?subject=List%20this%20job&body=Please%20send%20a%20link%20to%20the%20JD%20or%20give%20as%20many%20of%20the%20details%20below%3A%0A%0A-%20Title%3A%0A-%20Job%20description%3A%0A-%20Location%2FRemote%3A%0A-%20Full%20time%2F%20part%20time%3A%0A-%20Salary%20range%3A%0A-%20Application%20link%20%2F%20email%3A"
+              href="mailto:adamtpang@gmail.com?subject=List%20this%20job&body=Please%20send%20a%20link%20to%20the%20JD%20or%20give%20as%20many%20of%20the%20details%20below%3A%0A%0A-%20Title%3A%0A-%20Job%20description%3A%0A-%20Location%2FRemote%3A%0A-%20Full%20time%2F%20part%20time%3A%0A-%20Salary%20range%3A%0A-%20Application%20link%20%2F%20email%3A"
               className="border-2 border-border px-8 py-4 bg-primary text-primary-foreground font-mono font-bold text-lg shadow-brutal-lg hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all inline-block"
             >
               [ POST A JOB ] →
