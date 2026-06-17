@@ -242,7 +242,11 @@ export default function PlaybookPage() {
             })}
           </div>
           <p className="font-mono text-sm text-muted-foreground mt-6">
-            See the{" "}
+            Score any location on these criteria with the{" "}
+            <Link href="/portal" className="underline font-bold">
+              Portal scorecard
+            </Link>
+            , or see the{" "}
             <Link href="/world" className="underline">
               world catalog
             </Link>{" "}
