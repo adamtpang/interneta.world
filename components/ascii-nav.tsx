@@ -14,6 +14,7 @@ export function AsciiNav() {
 
   const navItems = [
     { href: "/explore", label: "[ EXPLORE ]" },
+    { href: "/atlas", label: "[ ATLAS ]" },
     { href: "/imagined", label: "[ IMAGINED ]" },
     { href: "/world", label: "[ WORLD ]" },
     { href: "/portal", label: "[ PORTAL ]" },

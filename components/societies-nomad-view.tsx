@@ -42,145 +42,129 @@ function cardScore(s: SocietyDatabase, key: SortKey): number {
   return typeof v === "number" ? v : -1;
 }
 
-function ScorePill({ score }: { score: number | null }) {
-  const band = scoreBand(score);
-  const color =
-    band === "great"
-      ? "var(--iw-green)"
-      : band === "good"
-        ? "var(--iw-gold)"
-        : band === "fair"
-          ? "var(--iw-orange)"
-          : "var(--muted)";
-  return (
-    <div
-      className="border-2 border-border shadow-brutal-sm bg-background flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0"
-      title="Federation Score (avg of 6 community dimensions)"
-    >
-      <div
-        className="font-mono font-bold text-xl sm:text-2xl tabular-nums"
-        style={{ color: score == null ? "var(--muted-foreground)" : color }}
-      >
-        {score == null ? "?" : score}
-      </div>
-      <div className="font-mono text-[8px] sm:text-[9px] tracking-widest uppercase text-muted-foreground">
-        Federation
-      </div>
-    </div>
-  );
+const PALETTE_HEX = [
+  "#06b6d4", "#d946ef", "#eab308", "#16a34a", "#dc2626", "#4f46e5", "#ea580c",
+];
+
+function hashName(str: string): number {
+  let h = 0;
+  for (const c of str) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return h;
 }
 
-function MiniBar({ value, label }: { value?: number; label: string }) {
-  const v = typeof value === "number" ? value : null;
-  return (
-    <div>
-      <div className="flex items-center justify-between font-mono text-[10px] mb-0.5">
-        <span className="text-muted-foreground">{label}</span>
-        <span className="font-bold tabular-nums">{v == null ? "—" : v}</span>
-      </div>
-      <div className="h-1 bg-muted overflow-hidden">
-        <div
-          className="h-full transition-all"
-          style={{
-            width: `${v ?? 0}%`,
-            background:
-              v == null
-                ? "var(--muted)"
-                : v >= 80
-                  ? "var(--iw-green)"
-                  : v >= 65
-                    ? "var(--iw-gold)"
-                    : "var(--iw-orange)",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
+// nomads.com-style photo tile: gradient "cover", score badge, flag + name,
+// the society's three strongest dimensions, region + vibe chips.
 function SocietyCard({ s }: { s: SocietyDatabase }) {
   const score = federationScore(s);
+  const band = scoreBand(score);
+  const badgeColor =
+    band === "great"
+      ? "#16a34a"
+      : band === "good"
+        ? "#eab308"
+        : band === "fair"
+          ? "#ea580c"
+          : "#94a3b8";
   const tags = deriveTags(s);
   const region = regionOf(s.location);
   const flag = locationFlag(s.location);
-  const accent = paletteAccent(s);
   const slug = societyNameToSlug(s.name);
+  const h = hashName(s.name);
+  const gradient = `linear-gradient(135deg, ${PALETTE_HEX[h % 7]} 0%, ${PALETTE_HEX[(h >> 3) % 7]} 100%)`;
+  const topDims = RADAR_KEYS.map((k) => ({ k, v: s[k] as number | undefined }))
+    .filter((d): d is { k: RadarKey; v: number } => typeof d.v === "number")
+    .sort((a, b) => b.v - a.v)
+    .slice(0, 3);
 
   return (
     <Link
       href={`/societies/${slug}`}
-      className="group border-2 border-border bg-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all p-4 sm:p-5 flex flex-col gap-4"
+      className="group relative block border-2 border-border shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all overflow-hidden"
+      style={{ minHeight: 220 }}
     >
-      {/* Header: logo or initial + name + score */}
-      <div className="flex items-start gap-3">
+      <div className="absolute inset-0" style={{ background: gradient }} />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.28) 42%, rgba(0,0,0,0.82) 100%)",
+        }}
+      />
+
+      {/* top: logo + score */}
+      <div className="relative flex items-start justify-between p-2.5">
         {s.icon ? (
           <Image
             src={s.icon}
             alt={`${s.name} logo`}
-            width={56}
-            height={56}
+            width={36}
+            height={36}
             unoptimized
-            className="w-14 h-14 sm:w-16 sm:h-16 object-contain rounded border-2 border-border bg-background flex-shrink-0"
+            className="w-9 h-9 rounded object-contain bg-white/90 border border-white/30 flex-shrink-0"
           />
         ) : (
           <div
-            className="w-14 h-14 sm:w-16 sm:h-16 border-2 border-border flex-shrink-0 flex items-center justify-center font-mono font-bold text-xl sm:text-2xl"
-            style={{ background: accent, color: "white" }}
+            className="w-9 h-9 rounded flex items-center justify-center font-mono font-bold text-sm text-white flex-shrink-0 border border-white/30"
+            style={{ background: paletteAccent(s) }}
           >
             {initialOf(s)}
           </div>
         )}
-        <div className="flex-1 min-w-0">
-          <h3 className="font-mono font-bold text-base sm:text-lg leading-tight line-clamp-2">
-            {s.name}
-          </h3>
-          <div className="font-mono text-xs text-muted-foreground mt-1 flex items-center gap-1.5 flex-wrap">
-            <span>{flag}</span>
-            <span className="line-clamp-1">{s.location || "Global"}</span>
-          </div>
-          {s.founded && (
-            <div className="font-mono text-[10px] text-muted-foreground mt-0.5">
-              founded {s.founded}
-            </div>
-          )}
+        <div
+          className="font-mono text-xs font-bold px-2 py-1 backdrop-blur-sm"
+          style={{ background: "rgba(0,0,0,0.45)", color: badgeColor }}
+          title="Federation Score"
+        >
+          {score == null ? "?" : score}
         </div>
-        <ScorePill score={score} />
       </div>
 
-      {/* Mission line */}
-      {s.mission && (
-        <p className="font-mono text-xs text-foreground/70 line-clamp-2 leading-relaxed">
-          {s.mission}
-        </p>
-      )}
-
-      {/* Stat bars */}
-      <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-        {RADAR_KEYS.map((k) => (
-          <MiniBar
-            key={k}
-            label={RADAR_LABELS[k]}
-            value={s[k] as number | undefined}
-          />
-        ))}
-      </div>
-
-      {/* Tags */}
-      {tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
-          {tags.map((t) => (
+      {/* bottom */}
+      <div className="absolute inset-x-0 bottom-0 p-3 text-white">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-2xl drop-shadow">{flag}</span>
+          <span className="font-mono font-bold text-base sm:text-lg leading-tight drop-shadow line-clamp-1">
+            {s.name}
+          </span>
+        </div>
+        {topDims.length > 0 ? (
+          <div className="flex gap-1.5 mb-2">
+            {topDims.map((d) => (
+              <div
+                key={d.k}
+                className="flex-1 bg-black/35 backdrop-blur-sm px-1.5 py-1 text-center"
+              >
+                <div className="text-[7px] tracking-widest text-white/60 uppercase truncate">
+                  {RADAR_LABELS[d.k]}
+                </div>
+                <div className="text-[10px] font-bold font-mono">{d.v}</div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mb-2 font-mono text-[9px] text-white/60">
+            scores pending
+          </div>
+        )}
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="font-mono text-[9px] px-1.5 py-0.5 bg-black/35 backdrop-blur-sm text-white/80">
+            {region}
+          </span>
+          {tags.slice(0, 1).map((t) => (
             <span
               key={t}
-              className="font-mono text-[10px] px-2 py-0.5 border border-border bg-muted/40"
+              className="font-mono text-[9px] px-1.5 py-0.5 bg-black/35 backdrop-blur-sm text-white/80"
             >
               {t}
             </span>
           ))}
-          <span className="font-mono text-[10px] px-2 py-0.5 border border-border bg-muted/40">
-            {region}
-          </span>
+          {s.founded && (
+            <span className="font-mono text-[9px] px-1.5 py-0.5 bg-black/35 text-white/60">
+              &apos;{String(s.founded).slice(2)}
+            </span>
+          )}
         </div>
-      )}
+      </div>
     </Link>
   );
 }
@@ -393,7 +377,7 @@ export function SocietiesNomadView({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {sorted.map((s) => (
               <SocietyCard key={s.name} s={s} />
             ))}

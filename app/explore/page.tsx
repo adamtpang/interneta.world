@@ -84,11 +84,16 @@ export default async function ExplorePage() {
             <span key={i} className="block h-2 flex-1" style={{ background: c }} />
           ))}
         </div>
-        <p className="font-mono text-base sm:text-lg text-foreground/85 leading-relaxed max-w-3xl mb-10">
+        <p className="font-mono text-base sm:text-lg text-foreground/85 leading-relaxed max-w-3xl mb-5">
           Every nation-state and every network state, in one grid, measured the
           same way: population, GDP, and square meters. Filter by region, sort
           by what you value, and find the place that fits. Or, if none of them
           do, start your own.
+        </p>
+        <p className="font-mono text-sm mb-10">
+          <Link href="/atlas" className="underline font-bold">
+            Want a pick tailored to you and your passport? Open the Atlas →
+          </Link>
         </p>
 
         {/* Start your own CTA band */}
