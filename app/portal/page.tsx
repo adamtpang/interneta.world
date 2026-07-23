@@ -76,11 +76,33 @@ export default function PortalPage() {
           materialize its first physical node. Choose wrong and the community
           scatters. Choose right and it compounds.
         </p>
-        <p className="font-mono text-sm text-muted-foreground max-w-3xl mb-14">
+        <p className="font-mono text-sm text-muted-foreground max-w-3xl mb-8">
           Below: the twelve variables that matter, a live scorecard to rate any
           location, and a reverse-engineering of what Balaji optimized for when
           he chose Forest City for Network School.
         </p>
+
+        {/* Live node search callout */}
+        <Link
+          href="/portal/kazakhstan"
+          className="block border-2 border-border shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all p-5 mb-14"
+          style={{
+            background:
+              "linear-gradient(135deg, #dc262618 0%, #06b6d418 60%, transparent 100%)",
+          }}
+        >
+          <div className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground mb-2">
+            ::: LIVE NODE SEARCH ::: 22 JUL 2026 :::
+          </div>
+          <div className="font-mono font-bold text-xl sm:text-2xl mb-1">
+            Malaysia revoked Network School&apos;s licence. Kazakhstan signed an
+            MOU.
+          </div>
+          <div className="font-mono text-sm text-foreground/75">
+            Four candidate sites ranked on a rubric weighted from the Forest
+            City post-mortem. [ OPEN THE SEARCH → ]
+          </div>
+        </Link>
 
         {/* Scorecard */}
         <section className="mb-20">

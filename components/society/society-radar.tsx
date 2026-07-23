@@ -54,7 +54,7 @@ export const RADAR_COLORS = [
   '#D4A843', // Economic Opportunity - Amber
 ];
 
-function RadarChart({ scores }: { scores: number[] }) {
+export function RadarChart({ scores }: { scores: number[] }) {
   const viewSize = 500;
   const cx = viewSize / 2;
   const cy = viewSize / 2;
@@ -256,14 +256,14 @@ function RadarChart({ scores }: { scores: number[] }) {
   );
 }
 
-function MetricsDisplay({ scores }: { scores: number[] }) {
+export function MetricsDisplay({ scores, scoreLabel = 'Community Score' }: { scores: number[]; scoreLabel?: string }) {
   const averageScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
 
   return (
     <div className="space-y-4">
       <div className="text-center pb-4 border-b border-border">
-        <div className="text-xs font-mono text-muted-foreground uppercase mb-1">Community Score</div>
+        <div className="text-xs font-mono text-muted-foreground uppercase mb-1">{scoreLabel}</div>
         <div className="text-4xl font-bold font-mono text-primary">{averageScore}</div>
         <div className="text-xs font-mono text-muted-foreground mt-1">/ 100</div>
       </div>

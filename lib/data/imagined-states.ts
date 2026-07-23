@@ -27,6 +27,14 @@ export type ImaginedState = {
   nextSteps?: string[];
   heroImageUrl?: string; // optional, drop in an Unsplash or original URL
   founderImageUrl?: string; // optional founder portrait
+  // nomads.com-style federation scoring (0-100), same six dimensions as /societies.
+  // Editorial projection by Interneta, not community-sourced. Set all six or none.
+  scalability?: number;
+  autonomy?: number;
+  qol?: number;
+  belonging?: number;
+  purpose?: number;
+  economic?: number;
 };
 
 export const IMAGINED_STATES: ImaginedState[] = [
@@ -806,6 +814,46 @@ export const IMAGINED_STATES: ImaginedState[] = [
     lat: 18.79,
     lng: 98.98,
     paletteIndex: 6,
+  },
+  {
+    slug: "gelephu-mindfulness-city",
+    founder: "King Jigme Khesar Namgyel Wangchuck",
+    founderRole: "King of Bhutan · Chairman, Gelephu Mindfulness City board",
+    cofounders: [
+      { name: "Bjarke Ingels", role: "masterplan architect, BIG" },
+      { name: "Dasho Dr. Lotay Tshering", role: "Governor of GMC; former PM of Bhutan" },
+      { name: "Joi Ito", role: "board member; chairman, Gelephu Investment & Development Corp" },
+    ],
+    stateName: "Gelephu Mindfulness City",
+    themeIcon: "🪷",
+    oneCommandment: "Happiness is the purpose of capitalism.",
+    theme:
+      "Bhutan is the only carbon-negative country on Earth, and the only one that measures itself in Gross National Happiness instead of GDP. Gelephu Mindfulness City pours that philosophy into concrete: a Special Administrative Region on the Assam border where the King chartered his own body of law — Singapore statutes and common law, Abu Dhabi's financial rulebook — so wellness founders, green-energy engineers, and digital-asset builders can operate under first-world rule of law inside the Himalayas. Eleven neighborhoods flow like rice paddies along thirty-five rivers, each civic landmark mapped to one of the nine domains of happiness.",
+    citizens:
+      "Buddhists and contemplatives, longevity and wellness founders, hydropower and green-energy engineers, and digital-asset builders drawn by zero tax on capital gains — anyone who wants Singapore's rule of law wrapped around a carbon-negative Himalayan valley",
+    capital: "Gelephu, Bhutan",
+    lat: 26.87056,
+    lng: 90.48556,
+    paletteIndex: 3,
+    cityScout:
+      "Gelephu sits in Sarpang District on Bhutan's southern border with Assam, India — flat, sub-tropical, and already a trade gateway, unlike the mountain-locked rest of the country. The masterplan by Bjarke Ingels Group (with Arup and Cistri) spreads over roughly 2,500 km², about three times Singapore, structured by the flow of thirty-five rivers into ribbon-like neighborhoods cascading from the northern hills. Its landmarks are infrastructure with a soul: the Sankosh Temple-Dam, a run-of-river hydro plant that doubles as a monastery BIG calls 'a 21st-century Tiger's Nest,' and a mass-timber international airport built around a central Forest Spine. The airport broke ground in July 2025; first residents are expected in the early 2030s.",
+    whyNow:
+      "Balaji's book ends at the hardest step: diplomatic recognition. Gelephu starts there. This is not a crowd crowdfunding land — it is a sitting monarch carving a sovereign Special Administrative Region out of his own kingdom, with its own laws, its own courts, and a zero-capital-gains regime, with Gross National Happiness as state philosophy. It runs the network-state thesis in reverse: instead of a startup society climbing toward statehood, an existing state is building a startup society from the top down. If it works, Gelephu is the proof that a nation can host a network state rather than resist it — exactly the transition Interneta exists to federate.",
+    nextSteps: [
+      "Finish Gelephu International Airport (main construction 2026, inauguration targeted 2029) — the physical on-ramp for citizens",
+      "Onboard the first residents and companies under the Application of Laws Act as Phase 1 builds toward ~2035",
+      "Publish the nine GNH domains as a citizen bill of rights — happiness, culture, governance, and ecology as guarantees",
+      "Issue a GMC residency credential interoperable with the Interneta census and passport",
+      "Apply for member-state status with Interneta as the first sovereign-chartered node in the federation",
+    ],
+    heroImageUrl: "",
+    founderImageUrl: "",
+    scalability: 82,
+    autonomy: 95,
+    qol: 88,
+    belonging: 72,
+    purpose: 93,
+    economic: 80,
   },
 ];
 

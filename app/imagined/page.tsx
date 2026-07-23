@@ -6,7 +6,7 @@ import { locationFlag } from "@/lib/utils/society-stats";
 export const metadata: Metadata = {
   title: "Imagined · 1000 Network States | interneta.world",
   description:
-    "What if every public figure with a clearly stated worldview founded a network state? A speculative catalog of 1000 imagined member states. Today: 36.",
+    "What if every public figure with a clearly stated worldview founded a network state? A speculative catalog of 1000 imagined member states. Today: 38.",
   alternates: { canonical: "https://interneta.world/imagined" },
 };
 

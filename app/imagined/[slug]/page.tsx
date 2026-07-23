@@ -6,6 +6,7 @@ import {
   getImaginedBySlug,
 } from "@/lib/data/imagined-states";
 import { locationFlag } from "@/lib/utils/society-stats";
+import { RadarChart, MetricsDisplay } from "@/components/society/society-radar";
 
 const PALETTE = [
   "var(--iw-cyan)",
@@ -94,6 +95,20 @@ export default async function ImaginedProfile({
       "Charter a treasury aligned with the values of the polity",
       "Apply for member-state status with Interneta after 500 ratified citizens",
     ];
+
+  // nomads.com-style federation scores, in RADAR_CATEGORIES order
+  // (scalability, autonomy, qol, belonging, purpose, economic).
+  const federationScores =
+    s.scalability != null
+      ? [
+          s.scalability,
+          s.autonomy ?? 0,
+          s.qol ?? 0,
+          s.belonging ?? 0,
+          s.purpose ?? 0,
+          s.economic ?? 0,
+        ]
+      : null;
 
   // Cross-link: 3 other imagined states with the closest paletteIndex (cousins).
   const related = IMAGINED_STATES.filter((x) => x.slug !== s.slug)
@@ -184,6 +199,31 @@ export default async function ImaginedProfile({
             </div>
           </div>
         </section>
+
+        {/* Federation readout — nomads.com-style scoring */}
+        {federationScores && (
+          <section>
+            <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-4">
+              ::: FEDERATION READOUT :::
+            </div>
+            <p className="font-mono text-xs sm:text-sm text-muted-foreground italic mb-6 max-w-2xl leading-relaxed">
+              nomads.com-style scoring across the six federation dimensions used on{" "}
+              <Link href="/societies" className="underline">
+                /societies
+              </Link>
+              . An editorial projection by Interneta &mdash; not community-sourced &mdash; a
+              first estimate of how {s.stateName} would score, pending real citizen data.
+            </p>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 border-2 border-border bg-card shadow-brutal-md p-6">
+                <RadarChart scores={federationScores} />
+              </div>
+              <div className="border-2 border-border bg-card shadow-brutal-md p-6">
+                <MetricsDisplay scores={federationScores} scoreLabel="Federation Score" />
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* The way of life */}
         <section>
