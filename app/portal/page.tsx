@@ -7,6 +7,8 @@ import {
   scoreCity,
   type Category,
 } from "@/lib/data/portal-criteria";
+import { rankSites } from "@/lib/data/node-search";
+import { NODE_SEARCHES } from "@/lib/data/node-searches";
 
 export const metadata: Metadata = {
   title: "Portal · Where to plant your node | interneta.world",
@@ -82,27 +84,59 @@ export default function PortalPage() {
           he chose Forest City for Network School.
         </p>
 
-        {/* Live node search callout */}
-        <Link
-          href="/portal/kazakhstan"
-          className="block border-2 border-border shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all p-5 mb-14"
-          style={{
-            background:
-              "linear-gradient(135deg, #dc262618 0%, #06b6d418 60%, transparent 100%)",
-          }}
-        >
-          <div className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground mb-2">
-            ::: LIVE NODE SEARCH ::: 22 JUL 2026 :::
+        {/* Node searches index */}
+        <div className="mb-14">
+          <div className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground mb-3">
+            ::: NODE SEARCHES :::
           </div>
-          <div className="font-mono font-bold text-xl sm:text-2xl mb-1">
-            Malaysia revoked Network School&apos;s licence. Kazakhstan signed an
-            MOU.
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {NODE_SEARCHES.map((s) => {
+              const top = rankSites(s)[0];
+              return (
+                <Link
+                  key={s.slug}
+                  href={`/portal/${s.slug}`}
+                  className="block border-2 border-border shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all p-5"
+                  style={{
+                    background:
+                      s.status === "active"
+                        ? "linear-gradient(135deg, #dc262618 0%, #06b6d418 60%, transparent 100%)"
+                        : "transparent",
+                  }}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-2xl">{s.flag}</span>
+                    <span className="font-mono font-bold text-lg">
+                      {s.country}
+                    </span>
+                    <span
+                      className="font-mono text-[9px] tracking-widest px-1.5 py-0.5 border border-border"
+                      style={{
+                        color:
+                          s.status === "active"
+                            ? "var(--iw-green)"
+                            : "var(--iw-orange)",
+                      }}
+                    >
+                      {s.status === "active" ? "ACTIVE" : "WATCH"}
+                    </span>
+                  </div>
+                  <div className="font-mono text-sm text-foreground/75 mb-2">
+                    {s.sites.length} candidate sites · top: {top.city} at{" "}
+                    {top.ev.final}/100
+                  </div>
+                  <div className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground">
+                    [ OPEN THE SEARCH → ]
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-          <div className="font-mono text-sm text-foreground/75">
-            Four candidate sites ranked on a rubric weighted from the Forest
-            City post-mortem. [ OPEN THE SEARCH → ]
-          </div>
-        </Link>
+          <p className="font-mono text-[10px] text-muted-foreground mt-3">
+            Country-agnostic: the rubric is code, each country is data. Add a
+            file under lib/data/node-searches and it appears here.
+          </p>
+        </div>
 
         {/* Scorecard */}
         <section className="mb-20">

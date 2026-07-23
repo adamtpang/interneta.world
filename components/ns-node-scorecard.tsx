@@ -3,11 +3,11 @@
 import { useMemo, useState } from "react";
 import {
   AXES,
-  SITES,
   evaluate,
   GATE_CAPS,
   type GateState,
-} from "@/lib/data/ns-node-search";
+  type Site,
+} from "@/lib/data/node-search";
 
 function Dots({
   value,
@@ -57,7 +57,7 @@ const GATE_LABELS: {
   },
 ];
 
-export function NsNodeScorecard() {
+export function NsNodeScorecard({ sites = [] }: { sites?: Site[] }) {
   const [scores, setScores] = useState<Record<string, number>>(() =>
     Object.fromEntries(AXES.map((a) => [a.key, 0]))
   );
@@ -75,7 +75,7 @@ export function NsNodeScorecard() {
     setScores((s) => ({ ...s, [key]: v }));
 
   const loadPreset = (slug: string) => {
-    const s = SITES.find((x) => x.slug === slug);
+    const s = sites.find((x) => x.slug === slug);
     if (s) {
       setScores({ ...s.scores });
       setGates({ ...s.gates });
@@ -91,7 +91,6 @@ export function NsNodeScorecard() {
 
   return (
     <div className="border-2 border-border bg-background shadow-brutal-md p-5 sm:p-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
         <div className="flex-1">
           <label className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground">
@@ -108,9 +107,7 @@ export function NsNodeScorecard() {
           <div
             className="font-mono font-bold text-5xl tabular-nums leading-none"
             style={{
-              color: anyRated
-                ? evalResult.color
-                : "var(--muted-foreground)",
+              color: anyRated ? evalResult.color : "var(--muted-foreground)",
             }}
           >
             {evalResult.final}
@@ -129,7 +126,6 @@ export function NsNodeScorecard() {
         </div>
       </div>
 
-      {/* Verdict */}
       {anyRated && (
         <div
           className="border-2 border-border p-4 mb-6 font-mono"
@@ -155,7 +151,6 @@ export function NsNodeScorecard() {
         </div>
       )}
 
-      {/* Hard gates */}
       <div className="border-2 border-border p-4 mb-6 bg-muted/20">
         <div className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground mb-3">
           HARD GATES · these cap the score, they are not weighted
@@ -192,31 +187,31 @@ export function NsNodeScorecard() {
         </div>
       </div>
 
-      {/* Presets */}
-      <div className="mb-6">
-        <div className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground mb-2">
-          LOAD A KAZAKHSTAN CANDIDATE
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {SITES.map((s) => (
+      {sites.length > 0 && (
+        <div className="mb-6">
+          <div className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground mb-2">
+            LOAD A CANDIDATE
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {sites.map((s) => (
+              <button
+                key={s.slug}
+                onClick={() => loadPreset(s.slug)}
+                className="font-mono text-xs px-2.5 py-1 border-2 border-border bg-background hover:bg-muted transition-colors"
+              >
+                {s.flag} {s.city}
+              </button>
+            ))}
             <button
-              key={s.slug}
-              onClick={() => loadPreset(s.slug)}
-              className="font-mono text-xs px-2.5 py-1 border-2 border-border bg-background hover:bg-muted transition-colors"
+              onClick={reset}
+              className="font-mono text-xs px-2.5 py-1 border-2 border-border bg-muted hover:bg-foreground hover:text-background transition-colors"
             >
-              {s.flag} {s.city}
+              CLEAR
             </button>
-          ))}
-          <button
-            onClick={reset}
-            className="font-mono text-xs px-2.5 py-1 border-2 border-border bg-muted hover:bg-foreground hover:text-background transition-colors"
-          >
-            CLEAR
-          </button>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Axes */}
       <div className="space-y-2">
         {AXES.map((a) => (
           <div

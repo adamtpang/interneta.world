@@ -300,51 +300,103 @@ export default async function ImaginedProfile({
           </ol>
         </section>
 
-        {/* Pitch / context */}
+        {/* Closing. Institutional projects get a different address than a
+            speculative pitch aimed at one individual. */}
         <section className="border-2 border-border bg-background shadow-brutal-md p-6 sm:p-8">
-          <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-4">
-            ::: A NOTE FROM THE FOUNDER OF INTERNETA :::
-          </div>
-          <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-5">
-            Why I sent you this link.
-          </h2>
-          <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
-            I have lived at <a href="https://ns.com" className="underline" target="_blank" rel="noopener noreferrer">Network School</a> for over a year. I have watched the network state thesis go from a book to a real, lived experiment. I have seen Balaji put it to work, and I have seen what is missing.
-          </p>
-          <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
-            The missing piece is a federation. A meta-layer that gives every distinct community a constitutional home, a shared census, an interoperable passport, an anthem, and a way to recognize each other as legitimate.
-          </p>
-          <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
-            That is what Interneta is. The United States of Interneta. The optimistic meta-layer for network states.
-          </p>
-          <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
-            <strong>{s.stateName}</strong> is what I think you would build, if you decided to build one. The One Commandment is what I have inferred from your public work. The site scout, the next steps, the citizenry: all educated guesses. They are wrong wherever you say so.
-          </p>
-          <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-6">
-            If any of this lands, I would love a fifteen-minute conversation. If none of it lands, I would still love your reply telling me where I missed.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="https://x.com/adamtpang"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border-2 border-border bg-foreground text-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-5 py-3 font-mono font-bold text-sm"
-            >
-              [ DM @adamtpang ]
-            </a>
-            <a
-              href="mailto:adamtpang@gmail.com?subject=Re: Interneta and ${encodeURIComponent(s.stateName)}"
-              className="border-2 border-border bg-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-5 py-3 font-mono font-bold text-sm"
-            >
-              [ EMAIL ]
-            </a>
-            <Link
-              href="/constitution"
-              className="border-2 border-border bg-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-5 py-3 font-mono font-bold text-sm"
-            >
-              [ READ THE CONSTITUTION ]
-            </Link>
-          </div>
+          {s.outreach === "institutional" ? (
+            <>
+              <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-4">
+                ::: AN OPEN INVITATION :::
+              </div>
+              <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-5">
+                Why this profile exists.
+              </h2>
+              <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
+                Most entries in this catalog are thought experiments: what a
+                given founder <em>might</em> build. This one is different.{" "}
+                <strong>{s.stateName}</strong> is real, chartered, and already
+                under construction. It is profiled here as a reference case, not
+                a proposal.
+              </p>
+              <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
+                It is included because it is the clearest existing proof of the
+                Interneta thesis: that a polity can be founded on a stated
+                philosophy, given codified law, and opened to citizens by
+                choice rather than by birth. Everything on this page is drawn
+                from public sources, and the federation scoring is an editorial
+                projection rather than an official measure.
+              </p>
+              <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-6">
+                To the team building it: Interneta is an open federation layer,
+                and the invitation to join it as a member state stands. If
+                anything here is wrong, tell us and it gets corrected.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href={`mailto:adamtpang@gmail.com?subject=${encodeURIComponent(
+                    `Interneta and ${s.stateName}`
+                  )}`}
+                  className="border-2 border-border bg-foreground text-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-5 py-3 font-mono font-bold text-sm"
+                >
+                  [ CORRECT THIS PAGE ]
+                </a>
+                <Link
+                  href="/constitution"
+                  className="border-2 border-border bg-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-5 py-3 font-mono font-bold text-sm"
+                >
+                  [ READ THE CONSTITUTION ]
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-4">
+                ::: A NOTE FROM THE FOUNDER OF INTERNETA :::
+              </div>
+              <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-5">
+                Why I sent you this link.
+              </h2>
+              <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
+                I have lived at <a href="https://ns.com" className="underline" target="_blank" rel="noopener noreferrer">Network School</a> for over a year. I have watched the network state thesis go from a book to a real, lived experiment. I have seen Balaji put it to work, and I have seen what is missing.
+              </p>
+              <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
+                The missing piece is a federation. A meta-layer that gives every distinct community a constitutional home, a shared census, an interoperable passport, an anthem, and a way to recognize each other as legitimate.
+              </p>
+              <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
+                That is what Interneta is. The United States of Interneta. The optimistic meta-layer for network states.
+              </p>
+              <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-4">
+                <strong>{s.stateName}</strong> is what I think you would build, if you decided to build one. The One Commandment is what I have inferred from your public work. The site scout, the next steps, the citizenry: all educated guesses. They are wrong wherever you say so.
+              </p>
+              <p className="font-mono text-base sm:text-lg leading-relaxed text-foreground/85 mb-6">
+                If any of this lands, I would love a fifteen-minute conversation. If none of it lands, I would still love your reply telling me where I missed.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="https://x.com/adamtpang"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border-2 border-border bg-foreground text-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-5 py-3 font-mono font-bold text-sm"
+                >
+                  [ DM @adamtpang ]
+                </a>
+                <a
+                  href={`mailto:adamtpang@gmail.com?subject=${encodeURIComponent(
+                    `Re: Interneta and ${s.stateName}`
+                  )}`}
+                  className="border-2 border-border bg-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-5 py-3 font-mono font-bold text-sm"
+                >
+                  [ EMAIL ]
+                </a>
+                <Link
+                  href="/constitution"
+                  className="border-2 border-border bg-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-5 py-3 font-mono font-bold text-sm"
+                >
+                  [ READ THE CONSTITUTION ]
+                </Link>
+              </div>
+            </>
+          )}
         </section>
 
         {/* Related */}

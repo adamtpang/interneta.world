@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { IMAGINED_STATES } from "@/lib/data/imagined-states";
+import {
+  IMAGINED_STATES,
+  ARCHETYPES,
+  archetypeOf,
+  TARGET_STATES,
+} from "@/lib/data/imagined-states";
 import { locationFlag } from "@/lib/utils/society-stats";
+import { ImaginedGlobe } from "@/components/imagined-globe";
 
 export const metadata: Metadata = {
   title: "Imagined · 1000 Network States | interneta.world",
-  description:
-    "What if every public figure with a clearly stated worldview founded a network state? A speculative catalog of 1000 imagined member states. Today: 38.",
+  description: `A thousand internet city-states across planet Earth, organized into eight lanes. What if every founder with a clearly stated worldview started one? Today: ${IMAGINED_STATES.length}.`,
   alternates: { canonical: "https://interneta.world/imagined" },
 };
 
@@ -20,11 +25,27 @@ const PALETTE = [
   "var(--iw-orange)",
 ];
 
-const TARGET = 1000;
+const TARGET = TARGET_STATES;
 
 export default function ImaginedPage() {
   const count = IMAGINED_STATES.length;
   const remaining = TARGET - count;
+  const perLane = Math.round(TARGET / ARCHETYPES.length);
+
+  const byLane = ARCHETYPES.map((a) => ({
+    ...a,
+    states: IMAGINED_STATES.filter((s) => archetypeOf(s) === a.key),
+  }));
+
+  const globePoints = IMAGINED_STATES.map((s) => ({
+    slug: s.slug,
+    name: s.stateName,
+    icon: s.themeIcon,
+    capital: s.capital,
+    archetype: archetypeOf(s),
+    lat: s.lat,
+    lng: s.lng,
+  }));
 
   return (
     <div className="min-h-screen py-12 sm:py-20">
@@ -98,6 +119,77 @@ export default function ImaginedPage() {
             </div>
           </div>
         </div>
+
+        {/* The globe: a thousand city-states across planet Earth */}
+        <section className="mb-16">
+          <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
+            ::: ACROSS PLANET EARTH :::
+          </div>
+          <h2 className="font-mono font-bold text-2xl sm:text-4xl mb-3">
+            Every imagined state, on the globe.
+          </h2>
+          <p className="font-mono text-sm text-muted-foreground mb-6 max-w-2xl">
+            Spin it. Filter by lane. Each pin is a polity that does not exist
+            yet, sitting on the exact patch of Earth where it would most likely
+            materialize. The empty space is the invitation.
+          </p>
+          <ImaginedGlobe points={globePoints} target={TARGET} />
+        </section>
+
+        {/* The eight lanes */}
+        <section className="mb-16">
+          <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
+            ::: THE EIGHT LANES :::
+          </div>
+          <h2 className="font-mono font-bold text-2xl sm:text-4xl mb-3">
+            A thousand is eight lanes of {perLane}.
+          </h2>
+          <p className="font-mono text-sm text-muted-foreground mb-6 max-w-2xl">
+            A flat list of a thousand is noise. Eight archetypes with roughly{" "}
+            {perLane} states each is a map. Every entry belongs to exactly one
+            lane, which is how the catalog stays navigable as it fills in.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {byLane.map((a) => {
+              const accent = PALETTE[a.paletteIndex % PALETTE.length];
+              const pct = Math.min(100, (a.states.length / perLane) * 100);
+              return (
+                <div
+                  key={a.key}
+                  className="border-2 border-border bg-background shadow-brutal-sm p-4"
+                >
+                  <div className="flex items-baseline justify-between mb-1">
+                    <span className="text-2xl">{a.icon}</span>
+                    <span
+                      className="font-mono text-xs font-bold tabular-nums"
+                      style={{ color: accent }}
+                    >
+                      {a.states.length}
+                      <span className="text-muted-foreground font-normal">
+                        /{perLane}
+                      </span>
+                    </span>
+                  </div>
+                  <div
+                    className="font-mono font-bold text-base mb-1"
+                    style={{ color: accent }}
+                  >
+                    {a.key}
+                  </div>
+                  <div className="h-1.5 bg-muted border border-border mb-2 overflow-hidden">
+                    <div
+                      className="h-full"
+                      style={{ width: `${pct}%`, background: accent }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-foreground/70 leading-snug">
+                    {a.blurb}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

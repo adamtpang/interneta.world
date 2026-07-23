@@ -35,7 +35,100 @@ export type ImaginedState = {
   belonging?: number;
   purpose?: number;
   economic?: number;
+  /** Which of the eight lanes of the federation this state belongs to. */
+  archetype?: Archetype;
+  /**
+   * How the closing section addresses the reader.
+   * "personal" (default): a direct pitch to an individual founder.
+   * "institutional": a real, chartered project led by a government or board,
+   * where a "why I DM'd you" note would be inappropriate.
+   */
+  outreach?: "personal" | "institutional";
 };
+
+/**
+ * The eight lanes. A thousand internet city-states is not a flat list; it is
+ * eight archetypes with roughly a hundred and twenty-five states each. Every
+ * imagined state belongs to exactly one lane, which is how the catalog stays
+ * navigable as it grows.
+ */
+export type Archetype =
+  | "Longevity"
+  | "Builders"
+  | "Capital"
+  | "Culture"
+  | "Governance"
+  | "Frontier"
+  | "Wellness"
+  | "Mind";
+
+export const ARCHETYPES: {
+  key: Archetype;
+  icon: string;
+  blurb: string;
+  paletteIndex: number;
+}[] = [
+  { key: "Longevity", icon: "🧬", blurb: "States organized around not dying. Health as civic infrastructure.", paletteIndex: 3 },
+  { key: "Builders", icon: "🛠️", blurb: "States where citizenship means shipping. Founders, engineers, makers.", paletteIndex: 6 },
+  { key: "Capital", icon: "💰", blurb: "States organized around money: treasuries, markets, compounding.", paletteIndex: 2 },
+  { key: "Culture", icon: "🎭", blurb: "States built on art, comedy, music, and story. The soft power lane.", paletteIndex: 1 },
+  { key: "Governance", icon: "⚖️", blurb: "States that are experiments in how to decide things together.", paletteIndex: 5 },
+  { key: "Frontier", icon: "🚀", blurb: "States pushing into unclaimed space: orbit, ocean, desert, code.", paletteIndex: 4 },
+  { key: "Wellness", icon: "🧘", blurb: "States organized around how a day feels. Calm, discipline, belonging.", paletteIndex: 0 },
+  { key: "Mind", icon: "🧠", blurb: "States built on thinking well: research, discourse, deep work.", paletteIndex: 5 },
+];
+
+/**
+ * Lane assignment for the founding catalog. Kept as a map so entries stay
+ * terse; new entries may instead set `archetype` directly.
+ */
+const ARCHETYPE_BY_SLUG: Record<string, Archetype> = {
+  "dont-die": "Longevity",
+  "forever-young": "Longevity",
+  protocol: "Longevity",
+  "stay-hard": "Wellness",
+  discipline: "Wellness",
+  "peak-state": "Wellness",
+  "monk-mode": "Wellness",
+  waking: "Mind",
+  "flow-state": "Wellness",
+  tidy: "Wellness",
+  "erotic-intelligence": "Wellness",
+  compounders: "Capital",
+  latticework: "Capital",
+  principles: "Capital",
+  onchain: "Capital",
+  "network-effect": "Capital",
+  fortress: "Capital",
+  "worldcoin-republic": "Governance",
+  zuzopolis: "Governance",
+  order: "Governance",
+  "the-portal": "Mind",
+  progress: "Mind",
+  marginalia: "Mind",
+  "deep-work": "Mind",
+  "the-stoa": "Mind",
+  authentica: "Mind",
+  "type-ii": "Frontier",
+  foundry: "Frontier",
+  accelerationia: "Builders",
+  "hacker-republic": "Builders",
+  "founders-republic": "Builders",
+  "1pct-better": "Builders",
+  "nomad-republic": "Builders",
+  "nomad-cup": "Builders",
+  "lifestyle-design": "Builders",
+  "comedy-republic": "Culture",
+  generosity: "Culture",
+  "gelephu-mindfulness-city": "Governance",
+};
+
+export function archetypeOf(s: ImaginedState): Archetype {
+  return s.archetype ?? ARCHETYPE_BY_SLUG[s.slug] ?? "Builders";
+}
+
+/** The target. Eight lanes, roughly 125 states each. */
+export const TARGET_STATES = 1000;
 
 export const IMAGINED_STATES: ImaginedState[] = [
   {
@@ -826,6 +919,10 @@ export const IMAGINED_STATES: ImaginedState[] = [
     ],
     stateName: "Gelephu Mindfulness City",
     themeIcon: "🪷",
+    archetype: "Governance",
+    // Real, chartered, and led by a head of state and a board. The personal
+    // "why I sent you this link" closing is inappropriate here.
+    outreach: "institutional",
     oneCommandment: "Happiness is the purpose of capitalism.",
     theme:
       "Bhutan is the only carbon-negative country on Earth, and the only one that measures itself in Gross National Happiness instead of GDP. Gelephu Mindfulness City pours that philosophy into concrete: a Special Administrative Region on the Assam border where the King chartered his own body of law — Singapore statutes and common law, Abu Dhabi's financial rulebook — so wellness founders, green-energy engineers, and digital-asset builders can operate under first-world rule of law inside the Himalayas. Eleven neighborhoods flow like rice paddies along thirty-five rivers, each civic landmark mapped to one of the nine domains of happiness.",

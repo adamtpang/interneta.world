@@ -1,24 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { NsNodeScorecard } from "@/components/ns-node-scorecard";
+import { ShareBar } from "@/components/share-bar";
 import {
   AXES,
-  SITES,
   LEVELS,
   NODE_STAGES,
-  COUNTRY_GATES,
-  ALMATY_FACILITIES,
   GUARDRAILS,
-  REFERENCES,
-  evaluate,
-} from "@/lib/data/ns-node-search";
-
-export const metadata: Metadata = {
-  title: "NS Node Search · Kazakhstan | interneta.world",
-  description:
-    "Malaysia revoked Network School's licence. Kazakhstan signed an MOU. Five candidate sites ranked on a 9-axis rubric with hard gates, scored country to facility.",
-  alternates: { canonical: "https://interneta.world/portal/kazakhstan" },
-};
+  rankSites,
+} from "@/lib/data/node-search";
+import { NODE_SEARCHES, getNodeSearch } from "@/lib/data/node-searches";
 
 const PALETTE = [
   "var(--iw-cyan)",
@@ -30,12 +22,40 @@ const PALETTE = [
   "var(--iw-orange)",
 ];
 
-export default function KazakhstanNodeSearchPage() {
-  const ranked = SITES.map((s) => ({ ...s, ev: evaluate(s.scores, s.gates) })).sort(
-    (a, b) => b.ev.final - a.ev.final
-  );
+export async function generateStaticParams() {
+  return NODE_SEARCHES.map((s) => ({ country: s.slug }));
+}
+
+type RouteParams = { country: string };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<RouteParams>;
+}): Promise<Metadata> {
+  const { country } = await params;
+  const s = getNodeSearch(country);
+  if (!s) return { title: "Node search not found | interneta.world" };
+  const ranked = rankSites(s);
   const top = ranked[0];
-  const runnerUp = ranked[1];
+  return {
+    title: `NS Node Search · ${s.country} | interneta.world`,
+    description: `${s.sites.length} candidate sites in ${s.country} ranked on the 9-axis node-fit rubric with hard gates. Top: ${top.city} at ${top.ev.final}/100.`,
+    alternates: { canonical: `https://interneta.world/portal/${s.slug}` },
+  };
+}
+
+export default async function NodeSearchPage({
+  params,
+}: {
+  params: Promise<RouteParams>;
+}) {
+  const { country } = await params;
+  const search = getNodeSearch(country);
+  if (!search) notFound();
+
+  const ranked = rankSites(search);
+  const others = NODE_SEARCHES.filter((s) => s.slug !== search.slug);
 
   return (
     <div className="min-h-screen py-10 sm:py-16">
@@ -49,54 +69,53 @@ export default function KazakhstanNodeSearchPage() {
 
         {/* Hero */}
         <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-4">
-          ::: NODE SEARCH ::: 22 JUL 2026 :::
+          ::: NODE SEARCH ::: {search.dateline} :::
         </div>
         <h1 className="font-mono font-bold text-4xl sm:text-6xl leading-tight tracking-tight mb-6">
-          Where does Network School<br />
-          <span className="text-muted-foreground">land in Kazakhstan?</span>
+          {search.headline}
+          <br />
+          <span className="text-muted-foreground">{search.subhead}</span>
         </h1>
-        <div className="flex gap-1 mb-8" aria-hidden>
+        <div className="flex gap-1 mb-6" aria-hidden>
           {PALETTE.map((c, i) => (
             <span key={i} className="block h-2 flex-1" style={{ background: c }} />
           ))}
         </div>
 
+        {search.status === "watch" && (
+          <div
+            className="border-2 border-border p-4 mb-8 font-mono text-sm"
+            style={{ background: "var(--iw-orange)14" }}
+          >
+            <span className="font-bold" style={{ color: "var(--iw-orange)" }}>
+              WATCH LIST ·
+            </span>{" "}
+            Not a live search. Included as a control case for the rubric.
+          </div>
+        )}
+
+        <ShareBar
+          slug={search.slug}
+          country={search.country}
+          top={`${ranked[0].city} ${ranked[0].ev.final}/100`}
+        />
+
         {/* Situation */}
-        <section className="mb-14">
+        <section className="mb-14 mt-10">
           <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
             ::: THE SITUATION :::
           </div>
           <div className="space-y-4 text-base sm:text-lg text-foreground/85 leading-relaxed">
-            <p>
-              On 21 July 2026 the Iskandar Puteri City Council revoked the
-              business licence of NSO Malaysia Sdn Bhd, the operator of Network
-              School, and ordered its Forest City premises to cease operating
-              from 22 July, citing licensing and premises-use breaches. MDEC
-              moved to revoke the company&apos;s Malaysia Digital status, and the
-              Johor state government backed the decision.
-            </p>
-            <p>
-              Within hours, Balaji Srinivasan announced a memorandum of
-              understanding between the Republic of Kazakhstan and Network
-              School for a new campus, signed with Minister of Digital
-              Development, Innovation and Aerospace Industry Zhaslan Madiyev.
-              The stated terms: expedited visas, streamlined redomiciliation,
-              and active recruitment of talent. The country is decided. The site
-              is not.
-            </p>
+            {search.situation.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
           </div>
-
           <div className="border-2 border-border bg-background shadow-brutal-md p-5 sm:p-6 mt-6 font-mono">
             <div className="text-[10px] tracking-[0.3em] text-muted-foreground mb-2">
               THE STRUCTURAL LESSON
             </div>
             <p className="text-base sm:text-lg leading-relaxed">
-              Forest City did not fail at the country level. Malaysia welcomed
-              NS. It failed at the <strong>facility level</strong>: a
-              premises-use licence on two adjoining units, where the activity
-              did not match the permitted use. That is why the gates below are
-              checked at <strong>every</strong> level. Passing at country level
-              tells you nothing about the building.
+              {search.structuralLesson}
             </p>
           </div>
         </section>
@@ -145,15 +164,13 @@ export default function KazakhstanNodeSearchPage() {
           <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
             ::: COUNTRY-LEVEL GATES :::
           </div>
-          <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-3">
-            Kazakhstan clears both. Sourced.
+          <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-6">
+            {search.countryGates.every((g) => g.met)
+              ? `${search.country} clears both. Sourced.`
+              : `${search.country} fails a gate.`}
           </h2>
-          <p className="font-mono text-sm text-muted-foreground mb-6 max-w-2xl">
-            These are hard gates, not weighted scores. Fail one and a site is
-            capped no matter how cheap or pleasant it is.
-          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {COUNTRY_GATES.map((g) => (
+            {search.countryGates.map((g) => (
               <div
                 key={g.key}
                 className="border-2 border-border bg-background shadow-brutal-sm p-4"
@@ -172,26 +189,28 @@ export default function KazakhstanNodeSearchPage() {
                 <p className="text-sm text-foreground/80 leading-relaxed mb-2">
                   {g.claim}
                 </p>
-                <a
-                  href={g.source.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-[10px] underline text-muted-foreground"
-                >
-                  {g.source.label} →
-                </a>
+                {g.source && (
+                  <a
+                    href={g.source.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[10px] underline text-muted-foreground"
+                  >
+                    {g.source.label} →
+                  </a>
+                )}
               </div>
             ))}
           </div>
         </section>
 
-        {/* Ranked sites */}
+        {/* Ranking */}
         <section className="mb-14">
           <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
             ::: THE RANKING :::
           </div>
           <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-3">
-            Five candidates, scored.
+            {search.sites.length} candidates, scored.
           </h2>
           <p className="font-mono text-sm text-muted-foreground mb-6 max-w-2xl">
             Each scored 0-5 on nine weighted axes, normalized to 100, then
@@ -251,7 +270,6 @@ export default function KazakhstanNodeSearchPage() {
                   />
                 </div>
 
-                {/* Gate chips */}
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {(
                     [
@@ -267,7 +285,7 @@ export default function KazakhstanNodeSearchPage() {
                         color: s.gates[k] ? "var(--iw-green)" : "var(--iw-red)",
                       }}
                     >
-                      {s.gates[k] ? "✓" : "✕"} {label}
+                      {s.gates[k] ? "PASS" : "FAIL"} {label}
                     </span>
                   ))}
                 </div>
@@ -289,7 +307,6 @@ export default function KazakhstanNodeSearchPage() {
                   {s.note}
                 </p>
 
-                {/* Expandable axis breakdown with sources */}
                 <details className="border-2 border-border bg-muted/10">
                   <summary className="cursor-pointer font-mono text-xs font-bold px-3 py-2 select-none">
                     Axis breakdown + sources
@@ -352,47 +369,34 @@ export default function KazakhstanNodeSearchPage() {
             ))}
           </div>
 
-          <div className="border-2 border-border bg-background shadow-brutal-md p-5 mt-6 font-mono">
-            <div className="text-[10px] tracking-[0.3em] text-muted-foreground mb-2">
+          <div className="border-2 border-border bg-background shadow-brutal-md p-5 mt-6 font-mono space-y-3">
+            <div className="text-[10px] tracking-[0.3em] text-muted-foreground">
               THE READ
             </div>
-            <p className="text-sm sm:text-base leading-relaxed text-foreground/85 mb-3">
-              <strong>{top.city}</strong> leads at {top.ev.final}/100 because it
-              answers the exact failure mode: the AIFC gives a codified
-              English-common-law wrapper, an independent court, and a real
-              redomiciliation path, next to the ministry that signed the MOU.{" "}
-              <strong>{runnerUp.city}</strong> is the close second and the more
-              interesting bet: a purpose-built tech city that already has its own
-              special legal regime, sitting next to the deepest talent pool in
-              the country.
-            </p>
-            <p className="text-sm sm:text-base leading-relaxed text-foreground/85">
-              The honest recommendation is not either/or.{" "}
-              <strong>
-                Incorporate in Astana under AIFC, put the campus in the Almaty
-                region.
-              </strong>{" "}
-              Legal wrapper where the law is; people where the people want to
-              be. That split is exactly what Forest City lacked.
-            </p>
+            {search.read.map((p, i) => (
+              <p
+                key={i}
+                className="text-sm sm:text-base leading-relaxed text-foreground/85"
+              >
+                {p}
+              </p>
+            ))}
           </div>
         </section>
 
-        {/* Almaty facility shortlist */}
+        {/* Facilities */}
         <section className="mb-14">
           <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
-            ::: FACILITY LEVEL ::: ALMATY :::
+            ::: {search.facilitiesLabel} :::
           </div>
           <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-3">
             The level that actually bites.
           </h2>
           <p className="font-mono text-sm text-muted-foreground mb-6 max-w-2xl">
-            Four facility options in the Almaty area, each with the specific
-            thing to verify in writing before signing. This is where Forest City
-            was lost.
+            {search.facilitiesIntro}
           </p>
           <div className="space-y-3">
-            {ALMATY_FACILITIES.map((f, i) => (
+            {search.facilities.map((f, i) => (
               <div
                 key={f.name}
                 className="border-2 border-border bg-background shadow-brutal-sm p-4"
@@ -437,9 +441,6 @@ export default function KazakhstanNodeSearchPage() {
           <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
             ::: WHAT A NODE IS :::
           </div>
-          <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-4">
-            The v1 to v5 ladder.
-          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
             {NODE_STAGES.map((s, i) => (
               <div
@@ -470,10 +471,10 @@ export default function KazakhstanNodeSearchPage() {
             The rubric, live.
           </h2>
           <p className="font-mono text-sm text-muted-foreground mb-6 max-w-2xl">
-            Rate a candidate 0-5 on each axis, or load a Kazakhstan site and
-            adjust. Untick a hard gate to watch the score get capped.
+            Rate a candidate 0-5 on each axis, or load a site and adjust. Untick
+            a hard gate to watch the score get capped.
           </p>
-          <NsNodeScorecard />
+          <NsNodeScorecard sites={search.sites} />
         </section>
 
         {/* Guardrails */}
@@ -481,9 +482,6 @@ export default function KazakhstanNodeSearchPage() {
           <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
             ::: GUARDRAILS :::
           </div>
-          <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-5">
-            So a node doesn&apos;t get revoked twice.
-          </h2>
           <ol className="space-y-3">
             {GUARDRAILS.map((g, i) => (
               <li
@@ -497,13 +495,45 @@ export default function KazakhstanNodeSearchPage() {
           </ol>
         </section>
 
+        {/* Other searches */}
+        {others.length > 0 && (
+          <section className="mb-14">
+            <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
+              ::: OTHER SEARCHES :::
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {others.map((o) => {
+                const r = rankSites(o)[0];
+                return (
+                  <Link
+                    key={o.slug}
+                    href={`/portal/${o.slug}`}
+                    className="border-2 border-border bg-background shadow-brutal-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all p-4 font-mono"
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xl">{o.flag}</span>
+                      <span className="font-bold text-sm">{o.country}</span>
+                      <span className="text-[9px] text-muted-foreground tracking-widest">
+                        {o.status === "active" ? "ACTIVE" : "WATCH"}
+                      </span>
+                    </div>
+                    <div className="text-xs text-foreground/70">
+                      Top: {r.city} · {r.ev.final}/100
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* References */}
         <section className="mb-12">
           <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
             ::: SOURCES :::
           </div>
           <ul className="space-y-1.5 font-mono text-xs">
-            {REFERENCES.map((r) => (
+            {search.references.map((r) => (
               <li key={r.url}>
                 <a
                   href={r.url}
@@ -520,47 +550,8 @@ export default function KazakhstanNodeSearchPage() {
             Axis scores are editorial estimates by Interneta from public
             sources, not an official Network School ranking. Every non-obvious
             claim carries a source; values without one are labeled editorial
-            estimates in the breakdown. The ns.com/search page is login-gated —
-            merge its content here when available.
+            estimates in the breakdown.
           </p>
-        </section>
-
-        {/* Cross-links */}
-        <section className="border-2 border-border bg-background shadow-brutal-md p-5 sm:p-6">
-          <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-4">
-            ::: RELATED :::
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono">
-            <Link
-              href="/portal"
-              className="border-2 border-border bg-background shadow-brutal-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all p-4"
-            >
-              <div className="font-bold text-sm mb-1">Portal →</div>
-              <div className="text-xs text-foreground/70">
-                The general node-siting rubric, plus what Balaji optimized for at
-                Forest City.
-              </div>
-            </Link>
-            <Link
-              href="/playbook"
-              className="border-2 border-border bg-background shadow-brutal-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all p-4"
-            >
-              <div className="font-bold text-sm mb-1">Playbook →</div>
-              <div className="text-xs text-foreground/70">
-                When to launch a second node, and the founder readiness test.
-              </div>
-            </Link>
-            <Link
-              href="/world/malaysia"
-              className="border-2 border-border bg-background shadow-brutal-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all p-4"
-            >
-              <div className="font-bold text-sm mb-1">Malaysia →</div>
-              <div className="text-xs text-foreground/70">
-                The mirror profile: Forest City, the SEZs, and what the node was
-                built on.
-              </div>
-            </Link>
-          </div>
         </section>
 
         <div className="mt-10 flex gap-1" aria-hidden>
