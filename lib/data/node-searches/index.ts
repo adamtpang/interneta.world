@@ -3,8 +3,15 @@
 import type { NodeSearch } from "@/lib/data/node-search";
 import { KAZAKHSTAN } from "./kazakhstan";
 import { UAE } from "./uae";
+import { GEORGIA } from "./georgia";
+import { EL_SALVADOR } from "./el-salvador";
 
-export const NODE_SEARCHES: NodeSearch[] = [KAZAKHSTAN, UAE];
+export const NODE_SEARCHES: NodeSearch[] = [
+  KAZAKHSTAN,
+  UAE,
+  GEORGIA,
+  EL_SALVADOR,
+];
 
 export function getNodeSearch(slug: string): NodeSearch | undefined {
   return NODE_SEARCHES.find((s) => s.slug === slug);

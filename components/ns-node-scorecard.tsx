@@ -240,7 +240,7 @@ export function NsNodeScorecard({ sites = [] }: { sites?: Site[] }) {
       <p className="font-mono text-[10px] text-muted-foreground mt-5 leading-relaxed">
         Weights come from the Malaysia post-mortem: government partnership
         (3.0x) and immigration (2.5x) outrank cost and lifestyle. The three
-        gates above are not scores — untick one and the result is capped
+        gates above are not scores. Untick one and the result is capped
         regardless of everything else, because a licence granted is a licence
         that can be revoked. Decision support, not an oracle.
       </p>

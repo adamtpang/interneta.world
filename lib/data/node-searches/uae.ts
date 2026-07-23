@@ -1,7 +1,7 @@
 import type { NodeSearch } from "@/lib/data/node-search";
 
 // The UAE is the control case for the rubric. It has arguably the best legal
-// wrappers on earth for this kind of entity — and it still cannot reach the
+// wrappers on earth for this kind of entity, and it still cannot reach the
 // top tier, because there is no written Network School commitment. That is the
 // hard gate doing its job: infrastructure does not substitute for a signature.
 export const UAE: NodeSearch = {
@@ -32,7 +32,7 @@ export const UAE: NodeSearch = {
       met: true,
       claim:
         "Fast-track residency pathways including the 10-year Golden Visa for founders, investors and highly skilled professionals, plus remote-work permits. Among the most frictionless entry regimes available to a distributed team.",
-      source: { label: "Neo Legal — VARA vs ADGM vs RAK DAO", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
+      source: { label: "Neo Legal, VARA vs ADGM vs RAK DAO", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
     },
   ],
   sites: [
@@ -43,16 +43,16 @@ export const UAE: NodeSearch = {
       region: "RAK / northern emirates",
       level: "Region + facility (free zone, DAO regime)",
       lane: "The only jurisdiction that recognises a DAO as a legal person",
-      note: "RAK Digital Assets Oasis is a free zone built specifically for Web3, and its DAO Associations Regime lets a DAO register as an association with legal personality — something no other jurisdiction in the set offers. It also accepts virtual-office arrangements, which suits a remote-first, distributed membership. The cheapest and fastest UAE setup, though the emirate itself is quieter than Dubai.",
+      note: "RAK Digital Assets Oasis is a free zone built specifically for Web3, and its DAO Associations Regime lets a DAO register as an association with legal personality, something no other jurisdiction in the set offers. It also accepts virtual-office arrangements, which suits a remote-first, distributed membership. The cheapest and fastest UAE setup, though the emirate itself is quieter than Dubai.",
       gates: { govt: false, immigration: true, siteWrapper: true },
       wrapperClaim:
         "A dedicated digital-assets free zone operating a DAO Associations Regime (DARe), under which a DAO may be registered as an association with legal personality.",
-      wrapperSource: { label: "Neo Legal — VARA vs ADGM vs RAK DAO", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
+      wrapperSource: { label: "Neo Legal, VARA vs ADGM vs RAK DAO", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
       scores: { govt: 3, immigration: 5, regulatory: 5, cost: 4, connectivity: 4, livability: 4, talent: 3, neutrality: 4, specialty: 5 },
       evidence: {
         govt: { note: "Free-zone authority actively courts Web3 businesses, but no NS-specific written commitment exists. Scored on general receptiveness only." },
         immigration: { note: "Golden Visa and remote-work permits; the free zone accepts virtual-office arrangements suited to distributed teams.", source: { label: "Neo Legal", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" } },
-        regulatory: { note: "The DAO Associations Regime gives a DAO legal personality — genuinely unique among the candidates.", source: { label: "Neo Legal", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" } },
+        regulatory: { note: "The DAO Associations Regime gives a DAO legal personality, genuinely unique among the candidates.", source: { label: "Neo Legal", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" } },
         cost: { note: "The lowest-cost and fastest-to-incorporate UAE free zone in the comparison. Editorial estimate." },
         connectivity: { note: "About an hour from Dubai International; strong power and fiber. Editorial estimate." },
         livability: { note: "Safe and modern with coast and mountains, but summer heat is severe and the social scene is thinner than Dubai. Editorial estimate." },
@@ -68,11 +68,11 @@ export const UAE: NodeSearch = {
       region: "Abu Dhabi / capital",
       level: "State + facility wrapper (ADGM)",
       lane: "Institutional-grade common law",
-      note: "Abu Dhabi Global Market is a free zone running a common-law legal environment under FSRA regulation, with a mature licensing system for exchanges, custodians and investment firms. The most institutionally credible wrapper in the UAE, and the closest analogue to what AIFC offers in Kazakhstan — with far deeper capital behind it.",
+      note: "Abu Dhabi Global Market is a free zone running a common-law legal environment under FSRA regulation, with a mature licensing system for exchanges, custodians and investment firms. The most institutionally credible wrapper in the UAE, and the closest analogue to what AIFC offers in Kazakhstan, with far deeper capital behind it.",
       gates: { govt: false, immigration: true, siteWrapper: true },
       wrapperClaim:
         "A free zone operating a common-law legal environment with English-language proceedings under FSRA regulation, with an established virtual-asset licensing framework.",
-      wrapperSource: { label: "Neo Legal — VARA vs ADGM vs RAK DAO", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
+      wrapperSource: { label: "Neo Legal, VARA vs ADGM vs RAK DAO", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
       scores: { govt: 3, immigration: 5, regulatory: 5, cost: 2, connectivity: 5, livability: 4, talent: 4, neutrality: 4, specialty: 4 },
       evidence: {
         govt: { note: "No NS-specific commitment. ADGM courts financial institutions broadly. Scored on general receptiveness only." },
@@ -97,7 +97,7 @@ export const UAE: NodeSearch = {
       gates: { govt: false, immigration: true, siteWrapper: true },
       wrapperClaim:
         "DIFC provides a common-law jurisdiction with English-language proceedings; Dubai separately operates VARA as a dedicated virtual-asset regulator.",
-      wrapperSource: { label: "Neo Legal — VARA vs ADGM vs RAK DAO", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
+      wrapperSource: { label: "Neo Legal, VARA vs ADGM vs RAK DAO", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
       scores: { govt: 3, immigration: 5, regulatory: 5, cost: 2, connectivity: 5, livability: 4, talent: 5, neutrality: 4, specialty: 3 },
       evidence: {
         govt: { note: "No NS-specific commitment identified. Scored on general receptiveness only." },
@@ -120,7 +120,7 @@ export const UAE: NodeSearch = {
       name: "Free-zone office + residential split",
       kind: "Standard UAE pattern",
       why: "The conventional structure: incorporate in the free zone, house members in ordinary residential towers nearby.",
-      watch: "This is precisely the Forest City split — entity in one regime, people in another, with permitted-use rules differing between them. Verify residential and coworking permitted use per unit before any commitment.",
+      watch: "This is precisely the Forest City split, entity in one regime, people in another, with permitted-use rules differing between them. Verify residential and coworking permitted use per unit before any commitment.",
     },
   ],
   read: [
@@ -128,8 +128,8 @@ export const UAE: NodeSearch = {
     "The practical read: if NS ever wanted a second node with institutional-grade common law, RAK DAO is the most distinctive option in the country, because it is the only jurisdiction in the whole comparison that will recognise a DAO as a legal person. But it is a watch-list entry, not a candidate, until somebody signs something.",
   ],
   references: [
-    { label: "Neo Legal — VARA vs ADGM vs RAK DAO comparison", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
-    { label: "Chambers — Blockchain & Crypto-Assets 2026, UAE", url: "https://practiceguides.chambers.com/practice-guides/blockchain-crypto-assets-2026/uae/trends-and-developments/O26041" },
-    { label: "Balaji — Network School node framework (v1-v5)", url: "https://balajis.com/p/network-school-2025" },
+    { label: "Neo Legal, VARA vs ADGM vs RAK DAO comparison", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
+    { label: "Chambers, Blockchain & Crypto-Assets 2026, UAE", url: "https://practiceguides.chambers.com/practice-guides/blockchain-crypto-assets-2026/uae/trends-and-developments/O26041" },
+    { label: "Balaji, Network School node framework (v1-v5)", url: "https://balajis.com/p/network-school-2025" },
   ],
 };

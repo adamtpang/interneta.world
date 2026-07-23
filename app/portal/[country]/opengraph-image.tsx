@@ -102,7 +102,7 @@ export default async function OG({
         >
           {ranked.map((s, i) =>
             row(
-              `${i + 1}. ${s.city} — ${s.ev.final}/100 · ${s.ev.band}`,
+              `${i + 1}. ${s.city} · ${s.ev.final}/100 · ${s.ev.band}`,
               s.ev.color,
               i === 0 ? 800 : 500
             )

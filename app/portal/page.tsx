@@ -7,8 +7,9 @@ import {
   scoreCity,
   type Category,
 } from "@/lib/data/portal-criteria";
-import { rankSites } from "@/lib/data/node-search";
+import { rankSites, evaluate } from "@/lib/data/node-search";
 import { NODE_SEARCHES } from "@/lib/data/node-searches";
+import { SHORTLIST, TIER_META } from "@/lib/data/node-search-shortlist";
 
 export const metadata: Metadata = {
   title: "Portal · Where to plant your node | interneta.world",
@@ -135,6 +136,155 @@ export default function PortalPage() {
           <p className="font-mono text-[10px] text-muted-foreground mt-3">
             Country-agnostic: the rubric is code, each country is data. Add a
             file under lib/data/node-searches and it appears here.
+          </p>
+        </div>
+
+        {/* The shortlist */}
+        <div className="mb-14">
+          <div className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground mb-3">
+            ::: THE SHORTLIST ::: WHERE TO POINT RESOURCES :::
+          </div>
+          <p className="font-mono text-sm text-foreground/80 mb-5 max-w-3xl leading-relaxed">
+            Every site across every search, put through a conjecture-and-
+            criticism pass: the strongest honest bull case, the strongest
+            honest objection, and the verdict. The tier answers one question:
+            what should be done with the next unit of attention?
+          </p>
+
+          {(["S", "A", "B"] as const).map((tier) => {
+            const meta = TIER_META[tier];
+            const entries = SHORTLIST.filter((e) => e.tier === tier)
+              .map((e) => {
+                const search = NODE_SEARCHES.find(
+                  (s) => s.slug === e.countrySlug
+                );
+                const site = search?.sites.find((s) => s.slug === e.siteSlug);
+                if (!search || !site) return null;
+                return { e, search, site, ev: evaluate(site.scores, site.gates) };
+              })
+              .filter((x): x is NonNullable<typeof x> => x !== null);
+
+            return (
+              <div key={tier} className="mb-6">
+                <div className="flex items-baseline gap-3 mb-3">
+                  <span
+                    className="font-mono font-bold text-lg px-2 py-0.5 border-2 border-border"
+                    style={{ color: meta.color }}
+                  >
+                    {meta.label}
+                  </span>
+                  <span className="font-mono text-[11px] text-muted-foreground">
+                    {meta.action}
+                  </span>
+                </div>
+
+                {tier === "B" ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {entries.map(({ e, search, site, ev }) => (
+                      <Link
+                        key={`${e.countrySlug}-${e.siteSlug}`}
+                        href={`/portal/${e.countrySlug}`}
+                        className="border-2 border-border bg-background shadow-brutal-sm hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all p-3 font-mono"
+                      >
+                        <div className="flex items-baseline justify-between gap-2">
+                          <span className="text-xs font-bold truncate">
+                            {site.flag} {site.city}
+                          </span>
+                          <span
+                            className="text-xs font-bold tabular-nums flex-shrink-0"
+                            style={{ color: ev.color }}
+                          >
+                            {ev.final}
+                            {ev.capped && (
+                              <span className="text-muted-foreground font-normal">
+                                {" "}
+                                (raw {ev.raw})
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                        <div className="text-[10px] text-foreground/70 mt-1 leading-snug">
+                          {e.verdict}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {entries.map(({ e, search, site, ev }) => (
+                      <div
+                        key={`${e.countrySlug}-${e.siteSlug}`}
+                        className="border-2 border-border bg-background shadow-brutal-md p-4 sm:p-5"
+                      >
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <Link
+                            href={`/portal/${e.countrySlug}`}
+                            className="font-mono font-bold text-base sm:text-lg hover:underline"
+                          >
+                            {site.flag} {site.city}
+                            <span className="text-muted-foreground font-normal text-xs">
+                              {" "}
+                              · {search.country}
+                            </span>
+                          </Link>
+                          <div className="text-right flex-shrink-0 font-mono">
+                            <span
+                              className="font-bold text-xl tabular-nums"
+                              style={{ color: ev.color }}
+                            >
+                              {ev.final}
+                            </span>
+                            {ev.capped && (
+                              <span className="text-[10px] text-muted-foreground">
+                                {" "}
+                                raw {ev.raw}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-[11px] leading-relaxed">
+                          <div>
+                            <div
+                              className="text-[9px] tracking-[0.2em] mb-1"
+                              style={{ color: "var(--iw-green)" }}
+                            >
+                              CONJECTURE
+                            </div>
+                            <p className="text-foreground/80">{e.thesis}</p>
+                          </div>
+                          <div>
+                            <div
+                              className="text-[9px] tracking-[0.2em] mb-1"
+                              style={{ color: "var(--iw-red)" }}
+                            >
+                              CRITICISM
+                            </div>
+                            <p className="text-foreground/80">{e.critique}</p>
+                          </div>
+                          <div>
+                            <div
+                              className="text-[9px] tracking-[0.2em] mb-1"
+                              style={{ color: "var(--iw-indigo)" }}
+                            >
+                              VERDICT
+                            </div>
+                            <p className="text-foreground/80">{e.verdict}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          <p className="font-mono text-[10px] text-muted-foreground max-w-3xl leading-relaxed">
+            Raw is what a site would score if its missing signature landed;
+            final is what it scores today with gates applied. The
+            resource-allocation rule that falls out: execute the signed pair,
+            spend conversations in raw-score order on the unsigned, and park
+            everything that needs more than a signature to move.
           </p>
         </div>
 

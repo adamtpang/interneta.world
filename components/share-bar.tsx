@@ -13,7 +13,7 @@ export function ShareBar({
 }) {
   const [copied, setCopied] = useState<string | null>(null);
   const url = `https://interneta.world/portal/${slug}`;
-  const summary = `NS node search · ${country} — top site: ${top}. Ranked on the 9-axis node-fit rubric with hard gates. ${url}`;
+  const summary = `NS node search · ${country} · top site: ${top}. Ranked on the 9-axis node-fit rubric with hard gates. ${url}`;
 
   const copy = async (text: string, which: string) => {
     try {

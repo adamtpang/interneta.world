@@ -8,6 +8,10 @@ import {
   LEVELS,
   NODE_STAGES,
   GUARDRAILS,
+  NS_BOUNTY,
+  NS_FORM,
+  NS_FORM_INSIGHTS,
+  FACILITY_CHECKLIST,
   rankSites,
 } from "@/lib/data/node-search";
 import { NODE_SEARCHES, getNodeSearch } from "@/lib/data/node-searches";
@@ -493,6 +497,123 @@ export default async function NodeSearchPage({
               </li>
             ))}
           </ol>
+        </section>
+
+        {/* What NS actually asks */}
+        <section className="mb-14">
+          <div className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-3">
+            ::: WHAT NS ACTUALLY ASKS :::
+          </div>
+          <h2 className="font-mono font-bold text-2xl sm:text-3xl mb-3">
+            The form is the rubric.
+          </h2>
+          <p className="font-mono text-sm text-muted-foreground mb-6 max-w-2xl">
+            NS runs a public second-site search with a finder&apos;s fee at{" "}
+            <a
+              href={NS_BOUNTY.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+            >
+              ns.com/search
+            </a>
+            . What the form asks is what NS weighs. Distilled below, grouped by
+            their own hierarchy.
+          </p>
+
+          {/* Bounty */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+            {NS_BOUNTY.tiers.map((t) => (
+              <div
+                key={t.rank}
+                className="border-2 border-border bg-background shadow-brutal-sm p-3 text-center"
+              >
+                <div
+                  className="font-mono font-bold text-xl"
+                  style={{ color: "var(--iw-gold)" }}
+                >
+                  {t.prize}
+                </div>
+                <div className="font-mono text-[9px] tracking-widest text-muted-foreground mt-1">
+                  {t.rank.toUpperCase()}
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="font-mono text-[10px] text-muted-foreground mb-6">
+            {NS_BOUNTY.note}
+          </p>
+
+          {/* Groups */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+            {NS_FORM.map((g, i) => (
+              <div
+                key={g.group}
+                className="border-2 border-border bg-background shadow-brutal-sm p-4"
+              >
+                <div
+                  className="font-mono font-bold text-base mb-0.5"
+                  style={{ color: PALETTE[i % PALETTE.length] }}
+                >
+                  {g.group}
+                </div>
+                <div className="font-mono text-[10px] text-muted-foreground mb-2">
+                  {g.maps}
+                </div>
+                <ul className="space-y-1.5">
+                  {g.asks.map((a) => (
+                    <li
+                      key={a}
+                      className="text-[12px] text-foreground/80 leading-snug pl-3 border-l-2 border-border"
+                    >
+                      {a}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* Insights */}
+          <div className="border-2 border-border bg-background shadow-brutal-md p-5 mb-6">
+            <div className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground mb-3">
+              WHAT THE FORM REVEALS
+            </div>
+            <ol className="space-y-2.5">
+              {NS_FORM_INSIGHTS.map((ins, i) => (
+                <li
+                  key={i}
+                  className="grid grid-cols-[auto_1fr] gap-3 text-sm text-foreground/85 leading-relaxed"
+                >
+                  <span
+                    className="font-mono font-bold tabular-nums"
+                    style={{ color: PALETTE[i % PALETTE.length] }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span>{ins}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Facility checklist */}
+          <div className="border-2 border-border bg-background shadow-brutal-sm p-5">
+            <div className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground mb-3">
+              THE FACILITY CHECKLIST · VERIFY IN WRITING
+            </div>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+              {FACILITY_CHECKLIST.map((c) => (
+                <li
+                  key={c}
+                  className="font-mono text-[11px] text-foreground/80 leading-snug flex gap-2"
+                >
+                  <span style={{ color: "var(--iw-green)" }}>▢</span>
+                  <span>{c}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </section>
 
         {/* Other searches */}

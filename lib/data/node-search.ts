@@ -1,14 +1,14 @@
-// Node search ENGINE — country-agnostic.
+// Node search ENGINE, country-agnostic.
 //
 // This file holds only the universal rubric: the nine weighted axes, the hard
 // gates, the scoring maths, the scouting hierarchy, and the guardrails.
 // Country data lives in lib/data/node-searches/*.ts and is registered in
 // lib/data/node-searches/index.ts. Adding a country is a data change, never a
-// code change — this is the v4 "clone-stamp anywhere" logic applied to the
+// code change, this is the v4 "clone-stamp anywhere" logic applied to the
 // scouting layer itself.
 //
 // THE STRUCTURAL LESSON the rubric encodes: Forest City did not fail at the
-// country level. Malaysia welcomed NS. It failed at the FACILITY level — a
+// country level. Malaysia welcomed NS. It failed at the FACILITY level, a
 // premises-use licence on specific units. So gates are checked at every level.
 
 export type Source = { label: string; url: string };
@@ -134,6 +134,97 @@ export const GUARDRAILS: string[] = [
   "Every non-obvious number is either sourced or explicitly labeled an editorial estimate. Do not launder estimates into facts when this reaches decision-makers.",
 ];
 
+// ── THE REAL NS SEARCH (distilled from ns.com/search, July 2026) ─────────
+// NS is running a public second-site search with a finder's fee. The form is
+// their revealed preference set: what they actually ask is what they actually
+// weigh. Distilled here, not mirrored verbatim; the live form is login-gated.
+
+export const NS_BOUNTY = {
+  url: "https://ns.com/search",
+  note: "Multiple submissions allowed; judged spam earns nothing.",
+  tiers: [
+    { rank: "Top 1000", prize: "$100" },
+    { rank: "Top 100", prize: "$1,000" },
+    { rank: "Top 10", prize: "$10,000" },
+    { rank: "Final site selected", prize: "$100,000" },
+  ],
+};
+
+export const NS_FORM: {
+  group: string;
+  maps: string;
+  asks: string[];
+}[] = [
+  {
+    group: "About you",
+    maps: "Sourcing quality, not the site",
+    asks: [
+      "Socials plus at least two links, biggest business run or exited",
+      "Could you operate or invest in this node yourself?",
+      "Are you native to the country you are proposing?",
+    ],
+  },
+  {
+    group: "Country",
+    maps: "Axes 1, 2, 7 · government, immigration, talent",
+    asks: [
+      "Every available digital-nomad visa: name, length in months, income floor, renewability",
+      "Have you personally applied and gotten one? Exact dates, how long, screenshots",
+      "The top three champions of tech in the country, with links",
+      "Can you introduce us to any of them?",
+    ],
+  },
+  {
+    group: "City",
+    maps: "Axes 5, 6 · connectivity, livability",
+    asks: [
+      "Closest major city and closest international airport, by code",
+      "Air quality index",
+    ],
+  },
+  {
+    group: "Site",
+    maps: "Axes 4, 9 and the facility gate",
+    asks: [
+      "Exact address with a maps link, ownership type, your relationship to it",
+      "Property type, year built, building m², lot m², unit count, bed count, average unit size",
+      "Zoning: what the property can LEGALLY be used for",
+      "Inside a special economic zone?",
+      "Gym? Move-in ready? Rent, sale, or both? Room for expansion nearby?",
+      "Facilities within a 30 minute drive: grocery, hospital, restaurants, transit, beach, sports, school",
+      "At least 5 photos, a video walkthrough, wifi speed in Mbps",
+    ],
+  },
+];
+
+/**
+ * What the form reveals about NS weighting, read against our rubric.
+ * The order of the form IS the hierarchy: Country, then City, then Site.
+ */
+export const NS_FORM_INSIGHTS: string[] = [
+  "Visas are interrogated hardest: program name, months, income floor, renewability, and proof you personally got one. That confirms immigration as a top-weight axis, and it demands receipts, not vibes.",
+  "Three named tech champions with warm-intro paths: the government-partnership axis starts as a people problem. A signature begins with someone who can walk you into the room.",
+  "Zoning is asked as 'what can this property LEGALLY be used for'. That is the exact question Forest City failed. The form learned the same lesson the rubric did.",
+  "Beds, units, move-in readiness, expansion room: speed to 1,024 residents is a first-class criterion. A gorgeous site that needs two years of construction loses to a move-in-ready one.",
+  "Air quality index is a named field. Our rubric folded it into livability; NS asks for the number itself.",
+  "The bounty shape ($100 to $100,000) says NS expects thousands of submissions and needs exactly one to be right. Precision beats volume; a judged-spam submission earns zero.",
+];
+
+/**
+ * The facility-level checklist, merged from the Forest City post-mortem and
+ * the fields the real form asks for. Verify each IN WRITING before signing.
+ */
+export const FACILITY_CHECKLIST: string[] = [
+  "Zoning: the permitted use covers residence plus coworking plus education, per unit, in writing",
+  "Special economic zone status of the parcel itself, not the district around it",
+  "Move-in readiness: occupancy possible without construction, or a dated, penalized delivery schedule",
+  "Capacity: units and beds against the 1,024-resident target, with the expansion parcel identified",
+  "The burn: gym on site, and outdoor training viable in the local climate most of the year",
+  "Thirty-minute circle: grocery, hospital, restaurants, transit, and ideally a beach or mountains",
+  "Wifi speed measured on site in Mbps, plus the airport code and drive time",
+  "Air quality index for the site, not the country average",
+];
+
 // ── COUNTRY DATA SHAPE ───────────────────────────────────────────────────
 
 export type AxisEvidence = { note: string; source?: Source };
@@ -169,7 +260,7 @@ export type Facility = {
   source?: Source;
 };
 
-/** One country's node search. Pure data — add a file, register it, done. */
+/** One country's node search. Pure data, add a file, register it, done. */
 export type NodeSearch = {
   slug: string;
   country: string;
