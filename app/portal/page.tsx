@@ -139,6 +139,27 @@ export default function PortalPage() {
           </p>
         </div>
 
+        {/* Global scout callout */}
+        <Link
+          href="/portal/scout"
+          className="block border-2 border-border shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all p-5 mb-14"
+          style={{
+            background:
+              "linear-gradient(135deg, #06b6d418 0%, #16a34a18 60%, transparent 100%)",
+          }}
+        >
+          <div className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground mb-2">
+            ::: GLOBAL NODE SCOUT ::: EARTH, CRAWLED :::
+          </div>
+          <div className="font-mono font-bold text-xl sm:text-2xl mb-1">
+            Six thousand SEZs. One customer. Twenty candidate sites.
+          </div>
+          <div className="font-mono text-sm text-foreground/75">
+            The priority criteria ranked P0 to P7, and a nomads-style grid from
+            Nongsa to Port City Colombo to Tashkent. [ OPEN THE SCOUT → ]
+          </div>
+        </Link>
+
         {/* The shortlist */}
         <div className="mb-14">
           <div className="font-mono text-[10px] tracking-[0.3em] text-muted-foreground mb-3">

@@ -1,0 +1,402 @@
+// The global node scout: Earth crawled for NS-shaped sites, nomads.com style.
+//
+// THE FRAME: the world has built somewhere between 5,400 (UNCTAD 2019) and
+// 6,200+ (SEZ Explorer / Adrianople Group's Open Zone Map) special economic
+// zones. Most sit under-filled. Every one of them was built for a customer
+// that barely exists: a portable population of high-earning builders who can
+// land anywhere. That customer finally exists, and it is the network school
+// model. The zones are the supply side; NS is the ICP.
+//
+// Tiers answer where the next unit of attention goes:
+//   S  = signed and wrapped. Execute.
+//   A  = would be S with a signature. Pursue the conversation.
+//   B  = real substrate, weaker on a priority axis. Track.
+//   C  = cautionary or premature. Watch only.
+//
+// quickScore is a 0-100 editorial quick-scan against the 9-axis rubric
+// (raw, before gate caps). Entries with a deepDive link have full sourced
+// breakdowns; the rest are labeled editorial where unsourced.
+
+import type { Source } from "@/lib/data/node-search";
+
+export type ScoutTier = "S" | "A" | "B" | "C";
+
+export type ScoutSite = {
+  slug: string;
+  site: string;
+  country: string;
+  flag: string;
+  region:
+    | "Central Asia"
+    | "Caucasus"
+    | "Middle East"
+    | "South Asia"
+    | "SE Asia"
+    | "East Asia"
+    | "Africa"
+    | "LatAm"
+    | "Europe";
+  tier: ScoutTier;
+  quickScore: number;
+  wrapper: string;
+  visa: string;
+  capacity: string;
+  champions: string;
+  lane: string;
+  note: string;
+  deepDive?: string;
+  source?: Source;
+};
+
+export const SCOUT_TIER_META: Record<
+  ScoutTier,
+  { label: string; color: string }
+> = {
+  S: { label: "S · EXECUTE", color: "#16a34a" },
+  A: { label: "A · PURSUE", color: "#06b6d4" },
+  B: { label: "B · TRACK", color: "#eab308" },
+  C: { label: "C · WATCH", color: "#94a3b8" },
+};
+
+export const SCOUT_SITES: ScoutSite[] = [
+  // ── S ──
+  {
+    slug: "astana-aifc",
+    site: "Astana (AIFC)",
+    country: "Kazakhstan",
+    flag: "🇰🇿",
+    region: "Central Asia",
+    tier: "S",
+    quickScore: 88,
+    wrapper: "AIFC: English common law, own court, AFSA regulator",
+    visa: "Neo Nomad B12-1 + IT residency B9-1",
+    capacity: "Capital city stock; campus by lease",
+    champions: "Minister Madiyev, the MOU signatory",
+    lane: "The redomiciliation seat",
+    note: "The only site on earth pairing a signed sovereign MOU with a codified common-law wrapper. The legal seat regardless of where beds land.",
+    deepDive: "/portal/kazakhstan",
+    source: { label: "AIFC", url: "https://aifc.kz/" },
+  },
+  {
+    slug: "alatau-city",
+    site: "Alatau City Business Park",
+    country: "Kazakhstan",
+    flag: "🇰🇿",
+    region: "Central Asia",
+    tier: "S",
+    quickScore: 85,
+    wrapper: "Parliament-adopted special regime + ~99,000 ha SEZ",
+    visa: "National Neo Nomad + B9-1 instruments",
+    capacity: "Greenfield; trunk utilities landing from 2026",
+    champions: "Same MOU; governance built for investors",
+    lane: "The clone-stamp canvas",
+    note: "Blank canvas AND legally wrapped, beside the deepest talent pool in the country. The campus if delivery dates arrive in writing.",
+    deepDive: "/portal/kazakhstan",
+    source: { label: "Alatau City", url: "https://alatau.city/" },
+  },
+  // ── A ──
+  {
+    slug: "nongsa",
+    site: "Nongsa Digital Park",
+    country: "Indonesia (Batam)",
+    flag: "🇮🇩",
+    region: "SE Asia",
+    tier: "A",
+    quickScore: 78,
+    wrapper: "Designated digital-economy SEZ",
+    visa: "Indonesian remote and investor KITAS routes",
+    capacity: "Six office buildings live; 8,000-talent buildout; D-Town opens late 2026",
+    champions: "Jointly promoted by Singapore EDB and Indonesian ministers",
+    lane: "The Forest City thesis without Malaysia",
+    note: "Forty minutes by ferry from Singapore, blessed by BOTH governments, with an Apple Developer Academy on site. Two economic ministries co-launched it: that is half a signature already.",
+    source: { label: "Singapore EDB on Nongsa D-Town", url: "https://www.edb.gov.sg/en/business-insights/insights/nongsa-d-town-launched-in-singapore-indonesia-tech-park.html" },
+  },
+  {
+    slug: "rak-dao",
+    site: "Ras Al Khaimah (RAK DAO)",
+    country: "UAE",
+    flag: "🇦🇪",
+    region: "Middle East",
+    tier: "A",
+    quickScore: 87,
+    wrapper: "Digital-assets free zone; DAO legal personality (DARe)",
+    visa: "Golden Visa + remote-work permits",
+    capacity: "Emirate hotel and residential stock",
+    champions: "Free-zone authority courts Web3 actively",
+    lane: "The only jurisdiction that recognises a DAO as a person",
+    note: "Highest raw score of any unsigned site. One aimed conversation with the authority answers whether a written campus commitment exists.",
+    deepDive: "/portal/uae",
+    source: { label: "Neo Legal comparison", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
+  },
+  {
+    slug: "port-city-colombo",
+    site: "Port City Colombo",
+    country: "Sri Lanka",
+    flag: "🇱🇰",
+    region: "South Asia",
+    tier: "A",
+    quickScore: 76,
+    wrapper: "Own Economic Commission; 2026 Amendment Act eased business rules",
+    visa: "Foreign-employee visas approved in five working days via single window",
+    capacity: "6.3M sqm planned, 47% residential; $600M new investment in H1 2026 across 71 strategic businesses",
+    champions: "Cabinet-level approvals for strategic businesses",
+    lane: "A city-from-the-sea with its own commission",
+    note: "A reclaimed-land jurisdiction whose commission approves visas in five days. Post-crisis Sri Lanka is hungry, and the zone's law says so.",
+    source: { label: "Daily FT, $600M in 1H2026", url: "https://www.ft.lk/front-page/Port-City-secures-600-m-new-investment-through-71-strategic-businesses-in-1H2026/44-793674" },
+  },
+  {
+    slug: "tashkent-it-park",
+    site: "Tashkent IT Park",
+    country: "Uzbekistan",
+    flag: "🇺🇿",
+    region: "Central Asia",
+    tier: "A",
+    quickScore: 74,
+    wrapper: "IT Park regime: 0% corporate and social tax on residents, guarantees running years out",
+    visa: "Dedicated IT Visa, rules refreshed March 2026; $30k investor threshold",
+    capacity: "650+ resident companies; Zero Risk program covers early office costs",
+    champions: "IT Park directorate recruiting foreign firms as policy",
+    lane: "The most ICP-hungry government on the list",
+    note: "A state that pays your early rent to come build is a state pre-disposed to sign. The pitch writes itself; the burn and neutrality axes need honest scoring.",
+    source: { label: "IT Visa rules, March 2026", url: "https://acsour.kz/news_eng/tpost/oyh6zxstj1-uzbekistan-updates-it-visa-rules-expande" },
+  },
+  {
+    slug: "el-zonte",
+    site: "El Zonte (Bitcoin Beach)",
+    country: "El Salvador",
+    flag: "🇸🇻",
+    region: "LatAm",
+    tier: "A",
+    quickScore: 68,
+    wrapper: "None; culture is the moat",
+    visa: "National routes + the $1M Freedom Visa",
+    capacity: "Small town; a campus means building",
+    champions: "Bitcoin Office; sovereign goodwill unproven in writing",
+    lane: "The only lived Bitcoin-native culture on earth",
+    note: "The cheapest signature test in the set: the state already staffs crypto diplomacy. Ask once; the file opens or closes at zero cost.",
+    deepDive: "/portal/el-salvador",
+    source: { label: "Private.law, Freedom Visa", url: "https://wiki.private.law/en/el-salvador-bitcoin" },
+  },
+  {
+    slug: "panama-pacifico",
+    site: "Panama Pacifico",
+    country: "Panama",
+    flag: "🇵🇦",
+    region: "LatAm",
+    tier: "A",
+    quickScore: 72,
+    wrapper: "Law 41 SEZ with immigration and labor benefits written into the zone law",
+    visa: "Zone-specific immigration benefits + friendly residency",
+    capacity: "Ex-Howard Air Force Base; 280 companies; 20,000-home masterplan",
+    champions: "Two-decade-old zone administration; Dell, 3M, Caterpillar in residence",
+    lane: "Move-in suburbia on a USD economy",
+    note: "The rare zone whose statute already covers immigration. Dollarized, hub airport, and housing that exists rather than renders.",
+    source: { label: "Panama Pacifico overview", url: "https://en.wikipedia.org/wiki/Panama_Pacifico" },
+  },
+  // ── B ──
+  {
+    slug: "clark",
+    site: "Clark Freeport + New Clark City",
+    country: "Philippines",
+    flag: "🇵🇭",
+    region: "SE Asia",
+    tier: "B",
+    quickScore: 70,
+    wrapper: "Five PEZA ecozones in the Clark area",
+    visa: "Philippine visas moderate; English-native population",
+    capacity: "Ex-US-base infrastructure, real hotel stock, 9,450-ha New Clark City",
+    champions: "BCDA and PEZA jointly pitching investors (May 2026 briefing)",
+    lane: "The English-speaking ex-base campus",
+    note: "An American-built runway-and-grid with agencies openly hunting locators. Weaker on wrapper novelty and visa speed than the A tier.",
+    source: { label: "PEZA at New Clark City", url: "https://www.peza.gov.ph/press-releases/peza-bcda-showcase-opportunities-new-clark-city" },
+  },
+  {
+    slug: "tbilisi",
+    site: "Tbilisi",
+    country: "Georgia",
+    flag: "🇬🇪",
+    region: "Caucasus",
+    tier: "B",
+    quickScore: 62,
+    wrapper: "None; 1% entrepreneur regime held personally",
+    visa: "365-day visa-free presence; work rights gray since March 2026",
+    capacity: "Cheap capital-city stock",
+    champions: "Hard to read while the government feuds with the West",
+    lane: "The best presence primitive, discounted by politics",
+    note: "Was the immigration crown jewel; the entry-versus-work split shows the rules can move against you.",
+    deepDive: "/portal/georgia",
+    source: { label: "2026 work-rights split", url: "https://www.shareuhack.com/en/posts/georgia-digital-nomad-work-permit-2026" },
+  },
+  {
+    slug: "kutaisi",
+    site: "Kutaisi (Hualing FIZ)",
+    country: "Georgia",
+    flag: "🇬🇪",
+    region: "Caucasus",
+    tier: "B",
+    quickScore: 60,
+    wrapper: "Operating Free Industrial Zone, 100% tax-free inside",
+    visa: "Same national instruments and caveat",
+    capacity: "Cheapest campus economics in the whole set",
+    champions: "Zone administration",
+    lane: "The prefab lab, if Georgia signs",
+    note: "Industrial zoning must be re-permitted for residence and education. That is the Forest City question, verbatim.",
+    deepDive: "/portal/georgia",
+    source: { label: "Kutaisi Free Zone", url: "https://kutaisifreezone.ge/" },
+  },
+  {
+    slug: "tenerife-zec",
+    site: "Tenerife (ZEC)",
+    country: "Spain (Canary Islands)",
+    flag: "🇪🇸",
+    region: "Europe",
+    tier: "B",
+    quickScore: 66,
+    wrapper: "ZEC: 4% corporate tax, the lowest fully EU-compliant regime; authorized through end-2026 pending EU extension",
+    visa: "Spain digital-nomad visa + full EU access",
+    capacity: "Real city and resort stock across the islands",
+    champions: "ZEC consortium recruits; requirements include local jobs and investment",
+    lane: "The EU option",
+    note: "The only candidate inside the EU single market. The regime's end-2026 authorization horizon is the thing to verify before leaning in.",
+    source: { label: "ZEC 2026 guide", url: "https://bm.consulting/en/insights/zec-canary-islands-complete-guide-2026/" },
+  },
+  {
+    slug: "jeju",
+    site: "Jeju Island",
+    country: "South Korea",
+    flag: "🇰🇷",
+    region: "East Asia",
+    tier: "B",
+    quickScore: 64,
+    wrapper: "Free international city; visa-free entry, no campus SEZ",
+    visa: "Visa-free entry + F-1-D nomad visa; province pushing 90-day workation stays",
+    capacity: "Deep hotel stock from the tourism economy",
+    champions: "Provincial government openly courting remote workers",
+    lane: "The East Asia lifestyle island",
+    note: "A government experimenting toward exactly this guest profile, on an island built to host. No wrapper for the entity is the gap.",
+    source: { label: "Korea.net, Jeju workation visa", url: "https://www.korea.net/NewsFocus/policies/view?articleId=261692" },
+  },
+  {
+    slug: "gift-city",
+    site: "GIFT City",
+    country: "India",
+    flag: "🇮🇳",
+    region: "South Asia",
+    tier: "B",
+    quickScore: 62,
+    wrapper: "IFSCA offshore regime; zone exempted from Gujarat's alcohol ban (Dec 2025 rules)",
+    visa: "Indian employment visas are the hard part; the domestic talent ocean is not",
+    capacity: "1,000+ entities; residential towers rising",
+    champions: "A union-government flagship",
+    lane: "India's offshore island on land",
+    note: "The lifestyle blocker just fell: foreigners drink on a passport, employees by permit. Still a domestic-facing zone with hard inbound visas.",
+    source: { label: "Outlook, GIFT City liquor rules", url: "https://www.outlookindia.com/national/gujarat-liquor-ban-lift-gift-city-alcohol-news-338295" },
+  },
+  {
+    slug: "kigali",
+    site: "Kigali Innovation City",
+    country: "Rwanda",
+    flag: "🇷🇼",
+    region: "Africa",
+    tier: "B",
+    quickScore: 60,
+    wrapper: "Sits in the Kigali SEZ (Law 16/2013); KIC broke ground Sep 2024",
+    visa: "Africa's most visa-open state (score 1.000), AU visa-free; global-membership visas moderate",
+    capacity: "$2B, 70 ha under construction; city stock nearby",
+    champions: "RDB and a national flagship mandate",
+    lane: "The governance-premium African node",
+    note: "The strongest execution culture on the continent. The visa openness is Africa-facing, which fits a pan-African cohort more than a global one.",
+    source: { label: "Rwanda visa openness", url: "https://www.riotimesonline.com/rwanda-visa-free-africa-2026/" },
+  },
+  {
+    slug: "madeira",
+    site: "Madeira",
+    country: "Portugal",
+    flag: "🇵🇹",
+    region: "Europe",
+    tier: "B",
+    quickScore: 63,
+    wrapper: "International Business Centre concessionary regime. Editorial",
+    visa: "Portugal D8 nomad visa + EU",
+    capacity: "Digital Nomad Village + hotel stock. Editorial",
+    champions: "Regional government nomad-friendly. Editorial",
+    lane: "The EU Atlantic island",
+    note: "The proven EU nomad island. Not deep-researched this pass; scores are editorial pending a full country file.",
+  },
+  // ── C ──
+  {
+    slug: "prospera",
+    site: "Próspera (Roatán)",
+    country: "Honduras",
+    flag: "🇭🇳",
+    region: "LatAm",
+    tier: "C",
+    quickScore: 71,
+    wrapper: "ZEDE framework repealed; Supreme Court 2024 upheld the repeal and called the framework unconstitutional from inception; congressional ratification pending",
+    visa: "Contested along with everything else",
+    capacity: "A real campus exists on Roatán",
+    champions: "The whole charter-city world, against a hostile sovereign; new president signed the ICSID Convention in March 2026",
+    lane: "The cautionary tale, and maybe the thaw",
+    note: "An $11B ICSID claim (bifurcation ordered March 2026) is what zone-law-versus-sovereign looks like when it fails. If the new government settles and re-charters, this re-rates overnight. Until then it is the rubric's Exhibit A.",
+    source: { label: "LegalClarity, charter city to arbitration", url: "https://legalclarity.org/prospera-honduras-from-charter-city-to-arbitration-fight/" },
+  },
+  {
+    slug: "bitcoin-city",
+    site: "Bitcoin City (Conchagua)",
+    country: "El Salvador",
+    flag: "🇸🇻",
+    region: "LatAm",
+    tier: "C",
+    quickScore: 63,
+    wrapper: "Announced, never enacted; unbuilt since 2021",
+    visa: "National routes",
+    capacity: "None; greenfield with an airport project nearby",
+    champions: "A presidential flagship on paper",
+    lane: "Score it when ground breaks",
+    note: "Maximal announced ambition, minimal delivered substance. Announcements are not zoning.",
+    deepDive: "/portal/el-salvador",
+  },
+  {
+    slug: "neom",
+    site: "NEOM",
+    country: "Saudi Arabia",
+    flag: "🇸🇦",
+    region: "Middle East",
+    tier: "C",
+    quickScore: 55,
+    wrapper: "Special-zone ambitions at sovereign scale. Editorial",
+    visa: "Editorial",
+    capacity: "Vast budgets, shifting scope. Editorial",
+    champions: "The deepest pockets in the exercise",
+    lane: "Champion-rich, execution-chaotic",
+    note: "Everything about it is enormous, including the uncertainty. Editorial entry; watch only.",
+  },
+  {
+    slug: "nusantara",
+    site: "Nusantara",
+    country: "Indonesia",
+    flag: "🇮🇩",
+    region: "SE Asia",
+    tier: "C",
+    quickScore: 57,
+    wrapper: "New-capital legal framework still forming. Editorial",
+    visa: "National routes",
+    capacity: "A capital under construction",
+    champions: "State flagship with changing momentum",
+    lane: "The greenfield capital",
+    note: "If Indonesia is the play, Nongsa is the near-term move and Nusantara the decade bet. Editorial entry.",
+  },
+];
+
+/** Priority criteria, ranked. Distilled from the live ns.com/search intake,
+ *  the Forest City post-mortem, and the Kazakhstan MOU terms. */
+export const PRIORITY_CRITERIA: { p: string; name: string; detail: string }[] = [
+  { p: "P0", name: "Legality of the exact building", detail: "Zoning permitted-use in writing, per unit, plus the parcel's SEZ status. The only thing that has ever actually killed a node. The intake asks it verbatim: what can this property LEGALLY be used for." },
+  { p: "P1", name: "A written sovereign, reached through people", detail: "A named minister and a signed document. The intake's three-tech-champions-with-intros question is the signature pipeline: commitments begin as warm introductions." },
+  { p: "P2", name: "Visas with receipts", detail: "Every program enumerated with length, income floor, renewability, and proof a real person obtained one, with dates and screenshots. Brochure claims score zero." },
+  { p: "P3", name: "Speed to 1,024 beds", detail: "Move-in ready beats beautiful. Units, beds, average unit size, expansion room nearby. Hotel-grade stock now outranks renders later." },
+  { p: "P4", name: "The daily loop", detail: "Gym on site for the burn, the thirty-minute circle (grocery, hospital, restaurants, transit, beach), measured wifi, and AQI, which the intake names as its own field." },
+  { p: "P5", name: "Reachability", detail: "Closest major city and international airport by code. A node the network cannot reach cheaply bleeds members." },
+  { p: "P6", name: "Deal clarity", detail: "One owner beats many, disclosed relationships beat mystery brokers, and rent-or-sale optionality beats either alone." },
+  { p: "P7", name: "Cost as tiebreaker", detail: "Cheapness never substitutes for a gate. It breaks ties between sites that already pass." },
+];
