@@ -18,6 +18,8 @@ export function AsciiNav() {
     { href: "/imagined", label: "[ IMAGINED ]" },
     { href: "/world", label: "[ WORLD ]" },
     { href: "/portal", label: "[ PORTAL ]" },
+    { href: "/vitality", label: "[ VITALITY ]" },
+    { href: "/collapse", label: "[ COLLAPSE ]" },
     { href: "/playbook", label: "[ PLAYBOOK ]" },
     { href: "/constitution", label: "[ CONSTITUTION ]" },
     { href: "/globe", label: "[ GLOBE ]" },
