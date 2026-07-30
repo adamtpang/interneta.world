@@ -81,3 +81,7 @@ node_modules/
 .claude/worktrees/
 .claude/settings.local.json
 .claude/settings.local.json*
+# Cross-agent handoff files: generated from raw AI transcripts, so they embed
+# verbatim prompts. Keep them local rather than in this public repo.
+*_CONTINUE_FROM_*.md
+*_SYNC_*.md
