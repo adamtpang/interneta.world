@@ -548,7 +548,7 @@ const getCachedAllEvents = unstable_cache(
     }
   },
   ['events-all'],
-  { revalidate: 300 }
+  { revalidate: 3600 }
 )
 
 export async function getAllEvents(): Promise<UIEvent[]> {
@@ -604,7 +604,7 @@ const getCachedAllNSEvents = unstable_cache(
     }
   },
   ['events-network-school'],
-  { revalidate: 300 }
+  { revalidate: 3600 }
 )
 
 export async function getAllNetworkSchoolEvents(): Promise<UIEvent[]> {
@@ -665,7 +665,7 @@ const getCachedEvents = unstable_cache(
     }
   },
   ['events-upcoming'],
-  { revalidate: 300 }
+  { revalidate: 3600 }
 )
 
 export async function getEvents(): Promise<UIEvent[]> {
@@ -800,7 +800,7 @@ const getCachedPopupCities = unstable_cache(
     }
   },
   ['popup-cities'],
-  { revalidate: 300 }
+  { revalidate: 3600 }
 )
 
 export async function getPopupCities(pageFilter?: string): Promise<PopupCity[]> {
