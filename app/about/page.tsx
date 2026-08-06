@@ -175,6 +175,14 @@ export default function AboutPage() {
             lets nation-state citizens migrate to network-state citizenship
             without renouncing what they came from.
           </p>
+          <p className="text-lg leading-relaxed text-foreground/85 mb-5">
+            Think of it as a traveling Y Combinator that never asks you to
+            leave. Same instinct, go to where the builders are, put them in a
+            room together, compress years into months. But no batch, no exit,
+            no equity taken. YC funnels founders into a cap table and moves on
+            to the next cohort. A network state recruits citizens into a
+            standing polity and keeps them.
+          </p>
           <p className="text-lg leading-relaxed text-foreground/85">
             From America to Interneta. The values keep going.
           </p>
