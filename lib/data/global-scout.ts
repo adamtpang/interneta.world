@@ -35,7 +35,9 @@ export type ScoutSite = {
     | "East Asia"
     | "Africa"
     | "LatAm"
-    | "Europe";
+    | "Caribbean"
+    | "Europe"
+    | "Oceania";
   tier: ScoutTier;
   quickScore: number;
   wrapper: string;
@@ -105,10 +107,10 @@ export const SCOUT_SITES: ScoutSite[] = [
     quickScore: 78,
     wrapper: "Designated digital-economy SEZ",
     visa: "Indonesian remote and investor KITAS routes",
-    capacity: "Six office buildings live; 8,000-talent buildout; D-Town opens late 2026",
+    capacity: "Six office buildings live; 8,000-talent buildout; D-Town opens late 2026. Costaluna and Nongsa Village (28 villas, 3BR each) are the named residential blocks, exact unit counts unconfirmed. Foreign land tenure is leasehold (HGB, ~30yr via PT PMA), not freehold",
     champions: "Jointly promoted by Singapore EDB and Indonesian ministers",
     lane: "The Forest City thesis without Malaysia",
-    note: "Forty minutes by ferry from Singapore, blessed by BOTH governments, with an Apple Developer Academy on site. Two economic ministries co-launched it: that is half a signature already.",
+    note: "Forty minutes by ferry from Singapore, blessed by BOTH governments, with an Apple Developer Academy on site. Two economic ministries co-launched it: that is half a signature already. Indonesia's E33G visa income floor ($60k/yr) is steep for early-career builders.",
     source: { label: "Singapore EDB on Nongsa D-Town", url: "https://www.edb.gov.sg/en/business-insights/insights/nongsa-d-town-launched-in-singapore-indonesia-tech-park.html" },
   },
   {
@@ -127,6 +129,22 @@ export const SCOUT_SITES: ScoutSite[] = [
     note: "Highest raw score of any unsigned site. One aimed conversation with the authority answers whether a written campus commitment exists.",
     deepDive: "/portal/uae",
     source: { label: "Neo Legal comparison", url: "https://neolegal.ae/compare/vara-vs-adgm-vs-rak-dao" },
+  },
+  {
+    slug: "bishkek-technopark",
+    site: "Technopark IT Hub",
+    country: "Kyrgyzstan",
+    flag: "🇰🇬",
+    region: "Central Asia",
+    tier: "A",
+    quickScore: 83,
+    wrapper: "High Technology Park regime: 0% VAT, profit and sales tax on residents",
+    visa: "Digital Nomad status made PERMANENT Apr 2025 (Cabinet Resolution No. 241): up to 10-year stay, no income floor, 7-day processing, 61 nationalities",
+    capacity: "14,000 sqm, 1,500 workstations, opened Apr 2025 by President Japarov, already leased to tech/crypto tenants. Unconfirmed whether it (or an adjacent HTP building) has residential beds, not just desks",
+    champions: "None verified yet; HTP KG leadership is the first call",
+    lane: "The best visa terms found anywhere in this search",
+    note: "A real, operating, government-inaugurated building inside the most generous long-stay regime researched this pass, no income minimum, a decade of stay. The one open question is whether it can actually house residents or only work them.",
+    source: { label: "24.kg, Japarov opens Technopark IT Hub", url: "https://24.kg/english/325642_Sadyr_Japarov_opens_Technopark_IT_Hub_in_Bishkek/" },
   },
   {
     slug: "port-city-colombo",
@@ -323,6 +341,38 @@ export const SCOUT_SITES: ScoutSite[] = [
     lane: "The EU Atlantic island",
     note: "The proven EU nomad island. Not deep-researched this pass; scores are editorial pending a full country file.",
   },
+  {
+    slug: "guam-westin",
+    site: "Westin Resort Guam",
+    country: "Guam (US territory)",
+    flag: "🇬🇺",
+    region: "Oceania",
+    tier: "B",
+    quickScore: 54,
+    wrapper: "US territory; no SEZ. GEDA Qualifying Certificate is a tax abatement, not a zone",
+    visa: "No dedicated long-stay program. Guam-CNMI Visa Waiver is tourism-only, 45 days, bars local work. Non-US citizens face ordinary federal immigration with no territory bypass",
+    capacity: "424 rooms, 21 floors, actively for sale via Colliers (broker-listed Jun 2025), single owner (Seoul-based fund). Marriott/Westin brand lease expires Apr 2026",
+    champions: "None verified; the local GEDA/economic-development office is the government entry point",
+    lane: "The most concrete, verifiable, for-sale real estate found in the entire search",
+    note: "Beats every other candidate on deal clarity: exact address, named broker, single owner, real beds today. Its one disqualifying-shaped weakness is the visa question, which has no good honest answer as designed for a US territory.",
+    source: { label: "Colliers, The Westin Resort Guam", url: "https://www.colliers.com/en-xa/news/0625-colliers-the-westin-resort-guam" },
+  },
+  {
+    slug: "mauritius",
+    site: "Ebene Cybercity",
+    country: "Mauritius",
+    flag: "🇲🇺",
+    region: "Africa",
+    tier: "B",
+    quickScore: 65,
+    wrapper: "No campus-specific SEZ found for residential use; Ebene is a pure commercial ICT district",
+    visa: "Premium Visa: $1,500/mo individual (+$500/dependent), ~48hr online approval, no government fee, income must originate outside Mauritius. Cleanest visa terms found anywhere this pass",
+    capacity: "Ebene Cybercity: 152 acres, 60+ buildings, 500,000+ sqm office space since 2001. No residential/co-living component identified",
+    champions: "Economic Development Board Mauritius administers the visa; no named tech champion verified",
+    lane: "Best visa in Africa, no matching building",
+    note: "The Premium Visa is real, fast, and generous, exactly the P2 story this search kept failing to find. The gap is P3: nothing residential sits inside the one proven tech district.",
+    source: { label: "EDB Mauritius, Premium Visa FAQ", url: "https://edbmauritius.org/wp-content/uploads/2023/12/FAQs-Premium-Visa.pdf" },
+  },
   // ── C ──
   {
     slug: "prospera",
@@ -334,10 +384,10 @@ export const SCOUT_SITES: ScoutSite[] = [
     quickScore: 71,
     wrapper: "ZEDE framework repealed; Supreme Court 2024 upheld the repeal and called the framework unconstitutional from inception; congressional ratification pending",
     visa: "Contested along with everything else",
-    capacity: "A real campus exists on Roatán",
+    capacity: "Duna Tower: a real 14-story residential tower, ~80% occupied, studios to 2BR condos (~$250k), built by a private developer inside the ZEDE. Exact address, sqm and unit count not publicly disclosed",
     champions: "The whole charter-city world, against a hostile sovereign; new president signed the ICSID Convention in March 2026",
     lane: "The cautionary tale, and maybe the thaw",
-    note: "An $11B ICSID claim (bifurcation ordered March 2026) is what zone-law-versus-sovereign looks like when it fails. If the new government settles and re-charters, this re-rates overnight. Until then it is the rubric's Exhibit A.",
+    note: "An $11B ICSID claim (bifurcation ordered March 2026) is what zone-law-versus-sovereign looks like when it fails. If the new government settles and re-charters, this re-rates overnight. Until then it is the rubric's Exhibit A. Duna Tower proves beds can get built even under legal siege.",
     source: { label: "LegalClarity, charter city to arbitration", url: "https://legalclarity.org/prospera-honduras-from-charter-city-to-arbitration-fight/" },
   },
   {
@@ -385,6 +435,38 @@ export const SCOUT_SITES: ScoutSite[] = [
     champions: "State flagship with changing momentum",
     lane: "The greenfield capital",
     note: "If Indonesia is the play, Nongsa is the near-term move and Nusantara the decade bet. Editorial entry.",
+  },
+  {
+    slug: "montenegro-lustica",
+    site: "The Chedi Lustica Bay",
+    country: "Montenegro",
+    flag: "🇲🇪",
+    region: "Europe",
+    tier: "C",
+    quickScore: 50,
+    wrapper: "None; commercial resort inventory, Orascom-linked developer",
+    visa: "No dedicated nomad program surfaced specific to this site",
+    capacity: "The actual venue where Zuzalu ran (Mar-May 2023, ~200 people, Vitalik Buterin co-founded). Real, operating 5-star hotel. Not for sale or dedicated; no permanent facility ever followed",
+    champions: "None current; the 2023 Zuzalu organizers dispersed into traveling popups (Edge City etc.) rather than a fixed site",
+    lane: "The proof-of-concept venue, not a candidate",
+    note: "Historically significant and heavily documented in press, but nothing permanent came of it and the property was never dedicated to this use. Included as the honest answer to \"what happened to the Zuzalu site,\" not as a live candidate.",
+    source: { label: "Coindesk, Zuzalu two months in", url: "https://www.coindesk.com/tech/2023/05/23/zuzalu-is-2-months-in-montenegro-with-crypto-elites-cold-plunges-vitalik-selfies" },
+  },
+  {
+    slug: "puerto-rico",
+    site: "Condado / Dorado crypto cluster",
+    country: "Puerto Rico (US territory)",
+    flag: "🇵🇷",
+    region: "Caribbean",
+    tier: "C",
+    quickScore: 48,
+    wrapper: "Act 60 (formerly 20/22): 0% long-term crypto capital gains for bona fide residents; rate rises to 4% for new applicants after Dec 31 2026",
+    visa: "Same structural gap as Guam: US citizens need none, non-US citizens get no territory-specific bypass, ordinary federal immigration applies",
+    capacity: "Real, documented crypto/expat cluster (Condado, Dorado, Ocean Park) since 2018, but no specific for-sale campus-scale building verified",
+    champions: "Historical figures only (Brock Pierce's Restart PR, 2018-era); current willingness to introduce is unconfirmed",
+    lane: "Real community, no building",
+    note: "Act 60 built a genuine expat cluster, but nothing here clears the bar of a named, addressable, campus-scale building. Cayman's competing nomad visa expired in 2024 and is confirmed not reopening.",
+    source: { label: "Holland & Knight, Act 60 and residency", url: "https://www.hklaw.com/en/insights/publications/2026/04/a-look-at-puerto-ricos-act-60-and-residency" },
   },
 ];
 
