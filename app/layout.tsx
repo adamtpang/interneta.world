@@ -10,6 +10,7 @@ import { AsciiNav } from "@/components/ascii-nav";
 import { BlurOverlay } from "@/components/blur-overlay";
 import { Footer } from "@/components/footer";
 import GAListener from "@/components/ga-listener";
+import { SOCIAL_LINKS } from "@/lib/config/social-links";
 
 const isStaging =
   process.env.INTERNETA_ENV === "staging" ||
@@ -38,6 +39,35 @@ export const metadata: Metadata = {
   },
 };
 
+// Site-wide structured data. sameAs links are pulled from the same
+// SOCIAL_LINKS config that renders the footer icons, so this can't drift
+// from the real, live accounts.
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Interneta",
+  alternateName: "The United States of Interneta",
+  url: "https://interneta.world",
+  logo: "https://interneta.world/logo-light.png",
+  description:
+    "A federation of internet city-states. Cloud first, land last. Recruit, not conquer. The optimistic meta-layer for network states.",
+  sameAs: SOCIAL_LINKS.map((link) => link.url),
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Interneta",
+  url: "https://interneta.world",
+  description:
+    "A federation of internet city-states. Cloud first, land last. Recruit, not conquer. The optimistic meta-layer for network states.",
+  publisher: {
+    "@type": "Organization",
+    name: "Interneta",
+    url: "https://interneta.world",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -59,6 +89,14 @@ export default function RootLayout({
           </>
         )}
         <meta name="x-deploy-check" content="2026-04-21-prod" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         {/* Light mode is the default for Interneta */}
         <script
           dangerouslySetInnerHTML={{
