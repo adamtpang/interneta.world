@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { buildSecurityHeaders } from "./lib/config/security";
 
 const isStagingEnv =
   process.env.INTERNETA_ENV === "staging" ||
@@ -28,15 +29,19 @@ const nextConfig: NextConfig = {
     ],
   },
   async headers() {
-    if (!isStagingEnv) return [];
     return [
       {
         source: "/:path*",
         headers: [
-          {
-            key: "X-Robots-Tag",
-            value: "noindex, nofollow, noarchive, nosnippet",
-          },
+          ...buildSecurityHeaders({ development: process.env.NODE_ENV !== "production" }),
+          ...(isStagingEnv
+            ? [
+                {
+                  key: "X-Robots-Tag",
+                  value: "noindex, nofollow, noarchive, nosnippet",
+                },
+              ]
+            : []),
         ],
       },
     ];

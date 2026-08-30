@@ -11,7 +11,10 @@ export default function ContactPage() {
           [ CONTACT ]
         </h1>
         <p className="text-sm font-mono text-muted-foreground">
-          Connect with us on any of these platforms.
+          Interneta is operated by Adam Pangelinan and built in public with the
+          contributors credited below. Use these channels for community,
+          correction, or privacy requests. Do not post sensitive personal data
+          in a public channel.
         </p>
 
         {/* Social Links - Vertical */}
@@ -29,6 +32,14 @@ export default function ContactPage() {
             </a>
           ))}
         </div>
+
+        <p className="font-mono text-xs text-muted-foreground">
+          The site&apos;s data practices and deletion path are described in the{" "}
+          <a href="/privacy" className="underline underline-offset-2">
+            privacy policy
+          </a>
+          .
+        </p>
 
         {/* Credits */}
         <div className="font-mono text-xs opacity-60 pt-4">

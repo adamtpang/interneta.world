@@ -3,7 +3,7 @@ import ContactClient from './contact-client';
 
 export const metadata = generatePageMetadata(
   "Contact",
-  "Get in touch with the Interneta team. Join our community on Telegram or reach out via email."
+  "Contact Interneta through its public community and source-code channels."
 );
 
 export default function ContactPage() {

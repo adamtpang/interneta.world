@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const ctas = [
   { href: "/constitution", label: "Read the Constitution", kbd: "[ I ]" },
-  { href: "/citizens", label: "Claim Citizenship", kbd: "[ II ]" },
+  { href: "/contact", label: "Join the Community", kbd: "[ II ]" },
   { href: "/globe", label: "Spin the Globe", kbd: "[ III ]" },
   { href: "/anthem", label: "Hear the Anthem", kbd: "[ IV ]" },
 ];
@@ -71,6 +71,12 @@ export default function Home() {
             <br />
             The optimistic meta-layer for network states.
           </p>
+          <p className="mt-6 font-mono text-sm max-w-2xl text-muted-foreground leading-relaxed">
+            Interneta&apos;s current public beta has no paid membership plan.
+            Reading, exploring, and joining the community cost $0. Wallet-based
+            citizenship remains a mockup, and the site is not accepting
+            signatures or payments.
+          </p>
 
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl">
             {ctas.map((c) => (
@@ -97,7 +103,7 @@ export default function Home() {
           </div>
           <div className="space-y-12">
             {manifesto.map((m) => (
-              <article
+              <div
                 key={m.n}
                 className="grid grid-cols-[auto_1fr] gap-6 sm:gap-10"
               >
@@ -112,7 +118,7 @@ export default function Home() {
                     {m.body}
                   </p>
                 </div>
-              </article>
+              </div>
             ))}
           </div>
         </div>
@@ -168,11 +174,16 @@ export default function Home() {
             new to live. Interneta is that place.
           </p>
           <Link
-            href="/citizens"
+            href="/contact"
             className="inline-block border-2 border-border bg-foreground text-background shadow-brutal-md hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all px-8 py-5 font-mono font-bold text-lg"
           >
-            [ CLAIM CITIZENSHIP &rarr; ]
+            [ JOIN THE COMMUNITY &rarr; ]
           </Link>
+          <div className="mt-6 font-mono text-sm">
+            <Link href="/citizens" className="underline underline-offset-4">
+              Preview the citizen passport
+            </Link>
+          </div>
         </div>
       </section>
     </div>

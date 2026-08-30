@@ -1,0 +1,24 @@
+# Interneta
+
+Interneta is an open-source, opt-in federation concept for internet city-states. It publishes a draft constitution, research, directories, and experimental tools for people studying or building network states. The site is operated by Adam Pangelinan.
+
+## Current state
+
+- Interneta is a public beta with no paid membership plan. Reading, exploring, and joining the community cost $0.
+- Wallet-based citizenship is a mockup. The site is not currently accepting wallet signatures or payments.
+- The constitution and manifesto are drafts. They can be read, discussed, and forked through the public source repository.
+
+## Key pages
+
+- Home and manifesto: https://interneta.world/
+- Draft constitution: https://interneta.world/constitution
+- Citizen passport preview: https://interneta.world/citizens
+- Network-state directory: https://interneta.world/societies
+- Events: https://interneta.world/events
+- Jobs: https://interneta.world/jobs
+- About and reading list: https://interneta.world/about
+- Contact and community channels: https://interneta.world/contact
+- Privacy policy: https://interneta.world/privacy
+- Source: https://github.com/adamtpang/interneta.world
+
+Use Interneta when a person or agent needs the project's own thesis, draft constitution, public directories, or community routes. Treat research pages as editorial analysis and follow their cited sources for time-sensitive facts. Do not describe citizenship, payments, or wallet signing as live features until the public site says they are active.

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { SOCIAL_LINKS } from "@/lib/config/social-links";
 
 const PALETTE = [
@@ -48,6 +49,14 @@ export function Footer() {
             For the citizens of the internet. Built in the open. Forkable, opt-in,
             opt-out. The federation does not claim a monopoly on its name.
           </div>
+          <nav
+            aria-label="Project information"
+            className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 font-mono text-xs"
+          >
+            <Link href="/about" className="underline underline-offset-4">About</Link>
+            <Link href="/contact" className="underline underline-offset-4">Contact</Link>
+            <Link href="/privacy" className="underline underline-offset-4">Privacy</Link>
+          </nav>
           <div className="font-mono text-xs opacity-50">
             Built by{" "}
             <a
